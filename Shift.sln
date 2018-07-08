@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Service", "1 - Service", "{5084DCC2-86F3-4B2F-9B11-F4C3A38B4CB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2- Domain", "2- Domain", "{324C33E0-99F6-465E-A58F-7CD68FD90916}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Infra", "3 - Infra", "{5E95D9B4-1653-43D0-B207-1BF07DA149FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Tests", "4 - Tests", "{EDE4E96F-5E1C-4E64-99A7-49520929F6E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.1 - Data", "3.1 - Data", "{75917325-DF25-462D-811E-E0128E40DA90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.2 - CrossCutting", "3.2 - CrossCutting", "{494F7138-F810-4177-8F0E-1415610F7C0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shift.Infra.CrossCutting.Identity", "src\Shift.Infra.CrossCutting.Identity\Shift.Infra.CrossCutting.Identity.csproj", "{F472C8AC-0EB8-48F1-8D34-158BF6CEA679}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shift.Services.Api", "src\Shift.Services.Api\Shift.Services.Api.csproj", "{3968646C-093F-4F2A-ACBF-1F44B52FC8F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F472C8AC-0EB8-48F1-8D34-158BF6CEA679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F472C8AC-0EB8-48F1-8D34-158BF6CEA679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F472C8AC-0EB8-48F1-8D34-158BF6CEA679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F472C8AC-0EB8-48F1-8D34-158BF6CEA679}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3968646C-093F-4F2A-ACBF-1F44B52FC8F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3968646C-093F-4F2A-ACBF-1F44B52FC8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3968646C-093F-4F2A-ACBF-1F44B52FC8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3968646C-093F-4F2A-ACBF-1F44B52FC8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{75917325-DF25-462D-811E-E0128E40DA90} = {5E95D9B4-1653-43D0-B207-1BF07DA149FA}
+		{494F7138-F810-4177-8F0E-1415610F7C0C} = {5E95D9B4-1653-43D0-B207-1BF07DA149FA}
+		{F472C8AC-0EB8-48F1-8D34-158BF6CEA679} = {494F7138-F810-4177-8F0E-1415610F7C0C}
+		{3968646C-093F-4F2A-ACBF-1F44B52FC8F3} = {5084DCC2-86F3-4B2F-9B11-F4C3A38B4CB1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A3F2010-A080-49DB-ABB9-7AEA37C89504}
+	EndGlobalSection
+EndGlobal
