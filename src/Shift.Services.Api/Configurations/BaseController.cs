@@ -22,6 +22,10 @@ namespace Shift.Services.Api.Configurations
             //Testes.....Testes....Testes
             //Testes.....Testes....Testes
             //Testes.....Testes....Testes
+
+            //Testes.....Testes....Testes
+            //Testes.....Testes....Testes
+            //Testes.....Testes....Testes
         }
 
 
