@@ -15,17 +15,10 @@ namespace Shift.Services.Api.Configurations
     public class BaseController : Controller
     {
 
-        private readonly Notification _notifications;
 
         public BaseController()
         {
-            //Testes.....Testes....Testes
-            //Testes.....Testes....Testes
-            //Testes.....Testes....Testes
-
-            //Testes.....Testes....Testes
-            //Testes.....Testes....Testes
-            //Testes.....Testes....Testes
+            
         }
 
 
@@ -70,13 +63,11 @@ namespace Shift.Services.Api.Configurations
 
 
 
-        protected void AdicionarErrosIdentity(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                //NotificarErro(result.ToString(), error.Description);
-            }
-        }
+
+
+
+
+
 
     }
 }
