@@ -2,11 +2,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Flunt.Notifications;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Shift.Domain.Core.Interfaces;
 
 #endregion
 
@@ -17,11 +15,10 @@ namespace Shift.Services.Api.Configurations
     public class BaseController : Controller
     {
 
-        private readonly IUnitOfWork _uow;
 
-        public BaseController(IUnitOfWork uow)
+        public BaseController()
         {
-            _uow = uow;
+            
         }
 
 
@@ -34,7 +31,7 @@ namespace Shift.Services.Api.Configurations
 
                 try
                 {
-                    _uow.Commit();
+                    //_uow.Commit();
 
                     return Ok(new
                     {
@@ -63,5 +60,14 @@ namespace Shift.Services.Api.Configurations
                 });
             }
         }
+
+
+
+
+
+
+
+
+
     }
 }
