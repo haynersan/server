@@ -1,8 +1,13 @@
-﻿using Flunt.Validations;
+﻿#region usings
+
+using Flunt.Validations;
+using Shift.Domain.Core.Interfaces;
+
+#endregion
 
 namespace Shift.Infra.CrossCutting.Identity.Commands.Inputs
 {
-    public class AdicionarUsuarioCommand : BaseUsuarioCommand
+    public class AdicionarUsuarioCommand : BaseUsuarioCommand, ICommandResult
     {
 
         public AdicionarUsuarioCommand(string username, string email, string matricula)
@@ -15,23 +20,26 @@ namespace Shift.Infra.CrossCutting.Identity.Commands.Inputs
             Password    = "abc123";
 
             Matricula   = matricula;
+        }
 
-            #region ContratoDeValidacao
+
+        public void Validar()
+        {
 
             AddNotifications(new Contract()
 
-                .Requires()
+            .Requires()
 
-                .IsNotNullOrEmpty(UserName, "Usuario", "O usuário deve ser informado")
-                .HasMaxLen(UserName, 50, "Usuario", "O usuário deve possuir no máximo 50 caracteres")
+            .IsNotNullOrEmpty(UserName, "Usuario", "O usuário deve ser informado")
+            .HasMaxLen(UserName, 50, "Usuario", "O usuário deve possuir no máximo 50 caracteres")
 
 
-                                
-                .IsNotNullOrEmpty(Matricula, "Matricula", "A matrícula deve ser informada")
-                .HasLen(Matricula, 06, "Matricula", "A matrícula deve possuir 06 caracteres")
-                );
+            .IsNotNullOrEmpty(Email, "Email", "O Email deve ser fornecido")
+            .IsEmail(Email, "Email", "O email não é válido")
 
-            #endregion
+            .IsNotNullOrEmpty(Matricula, "Matricula", "A matrícula deve ser informada")
+            .HasLen(Matricula, 06, "Matricula", "A matrícula deve possuir 06 caracteres")
+            );
 
         }
     }

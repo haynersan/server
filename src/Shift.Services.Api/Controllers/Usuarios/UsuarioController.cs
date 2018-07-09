@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Shift.Domain.Core.Interfaces;
 using Shift.Infra.CrossCutting.Identity.Commands.Inputs;
+using Shift.Infra.CrossCutting.Identity.Handler;
 using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Services.Api.Configurations;
 
@@ -20,33 +22,39 @@ namespace Shift.Services.Api.Controllers.Usuarios
     public class UsuarioController : BaseController
     {
 
-        private readonly UserManager<Usuario> _userManager;
+        //private readonly UserManager<Usuario> _userManager;
 
-        private readonly SignInManager<Usuario> _signInManager;
+        //private readonly SignInManager<Usuario> _signInManager;
 
-        private readonly ILogger _logger;
+        #region Config
 
 
+        private readonly UsuarioHandler _handler;
 
-        public UsuarioController(
-                                    UserManager<Usuario> userManager, 
-                                    SignInManager<Usuario> signInManager,
-                                    ILoggerFactory loggerFactory
-                                )
+       
+
+
+        public UsuarioController(IUnitOfWork uow, UsuarioHandler handler) : base(uow)
         {
-            _userManager    = userManager;
+            _handler    = handler;
+        } 
 
-            _signInManager  = signInManager;
 
-            _logger         = loggerFactory.CreateLogger<UsuarioController>();
-        }
+        #endregion
 
         [HttpPost]
         [AllowAnonymous]
         [Route("conta")]
-        public async Task<IActionResult> Adicionar([FromBody] AdicionarUsuarioCommand command)
+        public IActionResult Post([FromBody] AdicionarUsuarioCommand command)
         {
 
+            var result = _handler.Handle(command);
+
+            return Response(result, _handler.Notifications);
+
+
+
+            /*
             if (!ModelState.IsValid)
             {
                 return Response(command, null);
@@ -75,10 +83,13 @@ namespace Shift.Services.Api.Controllers.Usuarios
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
+
+                    
                 }
             }
 
             return Response(command, null);
+            */
         }
     }
 }

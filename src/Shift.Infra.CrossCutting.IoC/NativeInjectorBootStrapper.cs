@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Shift.Domain.Core.Interfaces;
 
 namespace Shift.Infra.CrossCutting.IoC
 {
@@ -17,6 +18,17 @@ namespace Shift.Infra.CrossCutting.IoC
 
             #endregion
 
+            #region Infra.Data
+
+
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+            //services.AddScoped<IplanContext>();
+
+
+
+            #endregion
 
         }
     }
