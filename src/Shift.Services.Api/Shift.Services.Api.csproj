@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shift.Infra.CrossCutting.Identity\Shift.Infra.CrossCutting.Identity.csproj" />
+    <ProjectReference Include="..\Shift.Infra.CrossCutting.IoC\Shift.Infra.CrossCutting.IoC.csproj" />
   </ItemGroup>
 
   <ItemGroup>
