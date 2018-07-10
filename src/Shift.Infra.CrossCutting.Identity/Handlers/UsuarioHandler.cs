@@ -23,8 +23,8 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
 
         public UsuarioHandler(  
-                                UserManager<Usuario> userManager,
-                                SignInManager<Usuario> signInManager)
+                                UserManager<Usuario>    userManager,
+                                SignInManager<Usuario>  signInManager)
         {
             _userManager    = userManager;
 

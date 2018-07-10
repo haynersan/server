@@ -24,10 +24,6 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
         #region Config
 
-        //private readonly UserManager<Usuario> _userManager;
-
-        //private readonly SignInManager<Usuario> _signInManager;
-
         private readonly UsuarioHandler _usuarioHandler;
 
 

@@ -1,18 +1,15 @@
 ﻿#region usings
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shift.Infra.CrossCutting.Identity.Context;
 using Shift.Infra.CrossCutting.Identity.Models;
+using Shift.Services.Api.Configurations;
 
 #endregion
 
@@ -89,7 +86,13 @@ namespace Shift.Services.Api
 
             #endregion
 
+
+            // MVC com restrição de XML e adição de filtro de ações.
             services.AddMvc();
+
+
+            // Registrar todos os DI
+            services.AddDIConfiguration();
 
         }
 
@@ -106,6 +109,9 @@ namespace Shift.Services.Api
                 await context.Response.WriteAsync("Hello World!");
             });*/
 
+     
+
+            app.UseStaticFiles();
             app.UseAuthentication();
 
             app.UseMvc();
