@@ -52,12 +52,12 @@ namespace Shift.Services.Api
 
                 services.Configure<IdentityOptions>(options =>
                 {
-                    options.Password.RequireDigit = false;           //A senha deve conter pelo menos um número
-                    options.Password.RequiredLength = 6;            //A senha deve conter pelo menos 8 caractares => Valor default = 6
-                    options.Password.RequiredUniqueChars = 6;       //A senha deve conter pelo menos 6 caracteres únicos (diferentes) =>Valor default = 1
-                    options.Password.RequireLowercase = false;       //A senha deve conter letras em minúsculo
-                    options.Password.RequireUppercase = false;       //A senha deve conter letras em maiúsculo
-                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireDigit               = false;         // A senha deve conter pelo menos um número
+                    options.Password.RequiredLength             = 6;             // A senha deve conter pelo menos 8 caractares => Valor default = 6
+                    options.Password.RequiredUniqueChars        = 6;             // A senha deve conter pelo menos 6 caracteres únicos (diferentes) =>Valor default = 1
+                    options.Password.RequireLowercase           = false;         // A senha deve conter letras em minúsculo
+                    options.Password.RequireUppercase           = false;         // A senha deve conter letras em maiúsculo
+                    options.Password.RequireNonAlphanumeric     = false;
                 });
 
 

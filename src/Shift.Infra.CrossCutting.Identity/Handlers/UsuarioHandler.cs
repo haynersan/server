@@ -14,7 +14,8 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 {
     public class UsuarioHandler :
         Notifiable,
-        IHandler<AdicionarUsuarioCommand>
+        IHandler<AdicionarUsuarioCommand>,
+        IHandler<LoginUsuarioCommand>
     {
 
         private readonly UserManager<Usuario> _userManager;
@@ -40,7 +41,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
             if (command.Invalid)
             {
                 AddNotifications(command);
-                return new CommandResult(false, "Não foi possível adicionar a empresa");
+                return new CommandResult(false, "Não foi possível adicionar o registro");
             }
 
 
@@ -73,6 +74,36 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
             // Retornar informações
             return new CommandResult(true, "Operação realizada com sucesso");
+        }
+
+
+
+        public ICommandResult Handle(LoginUsuarioCommand command)
+        {
+            // Fail Fast Validations
+            command.Validar();
+            if (command.Invalid)
+            {
+                AddNotifications(command);
+                return new CommandResult(false, "Não foi possível efetuar o login");
+            }
+
+
+            var result = _signInManager.PasswordSignInAsync(command.UserName, command.Password, false, false);
+
+
+
+            if (!result.Result.Succeeded)
+            {
+
+                return new CommandResult(false, "Não foi possível realizar esta operação");
+
+            }
+
+
+            // Retornar informações
+            return new CommandResult(true, "Operação realizada com sucesso");
+
         }
     }
 }
