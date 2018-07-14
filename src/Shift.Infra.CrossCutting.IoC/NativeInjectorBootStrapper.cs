@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shift.Domain.Core.Interfaces;
 using Shift.Infra.CrossCutting.Identity.Commands.Inputs;
 using Shift.Infra.CrossCutting.Identity.Handlers;
+using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Infra.Data.Context;
 using Shift.Infra.Data.UoW;
 
@@ -28,7 +29,7 @@ namespace Shift.Infra.CrossCutting.IoC
             #region Infra.CrossCutting.Identity
 
             services.AddScoped<UsuarioHandler, UsuarioHandler>();
-
+            services.AddScoped<IUser, AspNetUser>();
 
             #endregion
 

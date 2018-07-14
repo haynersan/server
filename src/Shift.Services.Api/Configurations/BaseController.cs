@@ -1,9 +1,9 @@
 ﻿#region usings
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Flunt.Notifications;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shift.Domain.Core.Interfaces;
 
@@ -13,14 +13,22 @@ using Shift.Domain.Core.Interfaces;
 namespace Shift.Services.Api.Configurations
 {
     [Produces("application/json")]
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
+
+        protected Guid UsuarioDaAplicacao { get; set; }
 
         private readonly IUnitOfWork _uow;
 
-        public BaseController(IUnitOfWork uow)
+
+        public BaseController(IUnitOfWork uow, IUser user)
         {
             _uow = uow;
+
+            if (user.IsAuthenticated())
+            {
+                UsuarioDaAplicacao = user.GetUserId();
+            }
         }
 
 
