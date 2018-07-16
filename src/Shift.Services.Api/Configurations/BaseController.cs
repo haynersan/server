@@ -21,6 +21,7 @@ namespace Shift.Services.Api.Configurations
         private readonly IUnitOfWork _uow;
 
 
+
         public BaseController(IUnitOfWork uow, IUser user)
         {
             _uow = uow;
@@ -30,6 +31,7 @@ namespace Shift.Services.Api.Configurations
                 UsuarioDaAplicacao = user.GetUserId();
             }
         }
+
 
 
         public new IActionResult Response(object result, IEnumerable<Notification> notifications)

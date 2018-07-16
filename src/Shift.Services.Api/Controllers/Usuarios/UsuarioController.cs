@@ -31,7 +31,6 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
         //private readonly TokenDescriptor        _tokenDescriptor;
 
-
         public UsuarioController(
                                     IUnitOfWork             uow,
                                     IUser                   user,

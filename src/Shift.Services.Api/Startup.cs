@@ -3,13 +3,18 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shift.Infra.CrossCutting.Identity.Context;
 using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Services.Api.Configurations;
+using Swashbuckle.AspNetCore.Swagger;
 
 #endregion
 
@@ -87,8 +92,36 @@ namespace Shift.Services.Api
             #endregion
 
 
+            // Options para configurações customizadas
+            services.AddOptions();
+
+
             // MVC com restrição de XML e adição de filtro de ações.
-            services.AddMvc();
+            services.AddMvc(options => 
+            {
+
+                options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
+
+
+                //options.UseCentralRoutePrefix(new RouteAttribute("api/v{version}"));
+
+
+            });
+
+
+            // Versionamento do WebApi
+            //services.AddApiVersioning("api/v{version}");
+
+
+
+            // Configurações do Swagger
+            //services.AddSwaggerConfig();
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
+
 
 
             // Registrar todos os DI
@@ -96,7 +129,7 @@ namespace Shift.Services.Api
 
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHttpContextAccessor accessor)
         {
             if (env.IsDevelopment())
             {
@@ -113,8 +146,50 @@ namespace Shift.Services.Api
 
             app.UseStaticFiles();
             app.UseAuthentication();
-
             app.UseMvc();
+
+
+            #region Swagger
+
+
+            if (env.IsProduction())
+            {
+                // Se não tiver um token válido no browser não funciona.
+                // Descomente para ativar a segurança.
+                // app.UseSwaggerAuthorized();
+            }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Shift.IO API v1.0");
+            });
+
+            #endregion
         }
     }
 }
+
+
+
+
+/*
+//Swagger - Aula 19 - Time: 1:35 minutos
+services.AddSwaggerGen(s =>
+{
+    s.SwaggerDoc("V1", new Info
+    {
+        Version         = "V1",
+
+        Title           = "App Shift",
+
+        Description     = "API da Aplicação Shift",
+
+        TermsOfService  = "Nenhum no Momento",
+
+        Contact         = new Contact { Name = "Wellington Hayner", Email = "whayners@hotmail.com", Url = "http://shift.io" },
+
+        License         = new License { Name = "PVT", Url = "http://shift.io/license" }
+    });
+});*/
