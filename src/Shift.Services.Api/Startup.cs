@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shift.Infra.CrossCutting.AspNetFilters;
 using Shift.Infra.CrossCutting.Identity.Context;
 using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Services.Api.Configurations;
+using Shift.Services.Api.Middlewares;
 using Swashbuckle.AspNetCore.Swagger;
 
 #endregion
@@ -23,77 +25,45 @@ namespace Shift.Services.Api
     public class Startup
     {
 
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfigurationRoot Configuration { get; }
 
 
 
         public void ConfigureServices(IServiceCollection services)
         {
 
-            #region Identity
+            
 
-                
-                #region EntityFramework
-
-                var connection = Configuration.GetConnectionString("DefaultConnection");
-
-                services.AddDbContext<IdentityContext>(options =>
-                    options.UseSqlServer(connection));
+            // Contexto do EF para o Identity
+            services.AddDbContext<IdentityContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-                services.AddIdentity<Usuario, UsuarioRole>()
-                    .AddEntityFrameworkStores<IdentityContext>()
-                    .AddDefaultTokenProviders();
-
-                #endregion
 
 
-                #region Senha
 
-                services.Configure<IdentityOptions>(options =>
-                {
-                    options.Password.RequireDigit               = false;         // A senha deve conter pelo menos um número
-                    options.Password.RequiredLength             = 6;             // A senha deve conter pelo menos 8 caractares => Valor default = 6
-                    options.Password.RequiredUniqueChars        = 6;             // A senha deve conter pelo menos 6 caracteres únicos (diferentes) =>Valor default = 1
-                    options.Password.RequireLowercase           = false;         // A senha deve conter letras em minúsculo
-                    options.Password.RequireUppercase           = false;         // A senha deve conter letras em maiúsculo
-                    options.Password.RequireNonAlphanumeric     = false;
-                });
+            // Configurações de Autenticação, Autorização e JWT.
+            services.AddMvcSecurity(Configuration);
 
 
-                services.ConfigureApplicationCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                });
 
-                #endregion
-
-
-                #region Cookie
-
-                services.ConfigureApplicationCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(05);
-                    //options.LoginPath
-                    //options.LogoutPath
-                    //options.AccessDeniedPath
-                    options.SlidingExpiration = true; //Indica que ao atingir a metade de expiração do tempo definido para cookie, ele será renovado automáticamente.
-                });
-
-            #endregion
-
-
-            #endregion
 
 
             // Options para configurações customizadas
             services.AddOptions();
+
+
+
 
 
             // MVC com restrição de XML e adição de filtro de ações.
@@ -101,29 +71,22 @@ namespace Shift.Services.Api
             {
 
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
-
-
-                //options.UseCentralRoutePrefix(new RouteAttribute("api/v{version}"));
-
+                options.Filters.Add(new ServiceFilterAttribute(typeof(GlobalActionLogger)));
 
             });
 
 
+            
             // Versionamento do WebApi
             //services.AddApiVersioning("api/v{version}");
 
 
-
+            
             // Configurações do Swagger
-            //services.AddSwaggerConfig();
-            services.AddSwaggerGen(x =>
-            {
-                x.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-            });
+            services.AddSwaggerConfig();
 
-
-
-
+  
+            
             // Registrar todos os DI
             services.AddDIConfiguration();
 
@@ -131,22 +94,33 @@ namespace Shift.Services.Api
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHttpContextAccessor accessor)
         {
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            /*
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });*/
 
-     
+
+            #region Configurações MVC
+            //CORS = Cross Orige Request
+            //O Objetivo do CORS é controlar as requisições que vem de fora de sua aplicação. 
+            app.UseCors(c =>
+            {
+                c.AllowAnyHeader();
+                c.AllowAnyMethod();
+                c.AllowAnyOrigin();
+                //c.WithOrigins("www.exemplo1.com.br, www.exemplo2.com.br");
+                //c.WithMethods("POST,GET,PUT,DELETE");
+            });
 
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc();
+
+            #endregion
+
 
 
             #region Swagger
@@ -154,9 +128,9 @@ namespace Shift.Services.Api
 
             if (env.IsProduction())
             {
-                // Se não tiver um token válido no browser não funciona.
-                // Descomente para ativar a segurança.
-                // app.UseSwaggerAuthorized();
+                //Se não tiver um token válido no browser não funciona.
+                //Descomente para ativar a segurança.
+                //app.UseSwaggerAuthorized();
             }
 
             app.UseSwagger();
@@ -170,26 +144,3 @@ namespace Shift.Services.Api
         }
     }
 }
-
-
-
-
-/*
-//Swagger - Aula 19 - Time: 1:35 minutos
-services.AddSwaggerGen(s =>
-{
-    s.SwaggerDoc("V1", new Info
-    {
-        Version         = "V1",
-
-        Title           = "App Shift",
-
-        Description     = "API da Aplicação Shift",
-
-        TermsOfService  = "Nenhum no Momento",
-
-        Contact         = new Contact { Name = "Wellington Hayner", Email = "whayners@hotmail.com", Url = "http://shift.io" },
-
-        License         = new License { Name = "PVT", Url = "http://shift.io/license" }
-    });
-});*/

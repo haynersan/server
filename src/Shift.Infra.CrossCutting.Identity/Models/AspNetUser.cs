@@ -30,7 +30,17 @@ namespace Shift.Infra.CrossCutting.Identity.Models
 
         public Guid GetUserId()
         {
-            return IsAuthenticated() ? Guid.Parse(_accessor.HttpContext.User.GetUserId()) : Guid.NewGuid();
+            //return IsAuthenticated() ? Guid.Parse(_accessor.HttpContext.User.GetUserId()) : Guid.NewGuid();
+
+
+            if (IsAuthenticated())
+            {
+                return Guid.Parse(_accessor.HttpContext.User.GetUserId());
+            }
+            else
+            {
+                return Guid.NewGuid();
+            }
         }
 
         public bool IsAuthenticated()

@@ -36,6 +36,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
         public ICommandResult Handle(AdicionarUsuarioCommand command)
         {
             
+            
             // Fail Fast Validations
             command.Validar();
             if (command.Invalid)
@@ -44,6 +45,9 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
                 return new CommandResult(false, "Não foi possível adicionar o registro");
             }
 
+
+            //TODO: Checar se a matrícula já existe;
+            //TODO: Checar se o usuário já existe;
 
             var user = new Usuario()
             {
@@ -57,6 +61,8 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
 
             var result = _userManager.CreateAsync(user, command.Password);
+
+           
 
             if (!result.Result.Succeeded)
             {
@@ -80,6 +86,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
         public ICommandResult Handle(LoginUsuarioCommand command)
         {
+            
             // Fail Fast Validations
             command.Validar();
             if (command.Invalid)
@@ -95,9 +102,9 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
             if (!result.Result.Succeeded)
             {
-
+                AddNotification("falha", "Não foi possível realizar login");
                 return new CommandResult(false, "Não foi possível realizar esta operação");
-
+               
             }
 
 

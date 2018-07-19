@@ -1,9 +1,14 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
+
+#endregion
+
 
 namespace Shift.Services.Api.Configurations
 {

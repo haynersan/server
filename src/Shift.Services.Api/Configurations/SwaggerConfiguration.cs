@@ -17,11 +17,17 @@ namespace Shift.Services.Api.Configurations
             {
                 s.SwaggerDoc("v1", new Info
                 {
-                    Version = "v1",
-                    Title = "Shift.IO API",
-                    Description = "API da APP Shift",
-                    TermsOfService = "Nenhum",
+
+                    Version         = "v1",
+
+                    Title           = "Shift API",
+
+                    Description     = "API da APP Shift",
+
+                    TermsOfService  = "Nenhum",
+
                     Contact = new Contact { Name = "Wellington Hayner", Email = "whayners@hotmail.com", Url = "http://shift.io" },
+
                     License = new License { Name = "PVT", Url = "http://shift.io/licensa" }
                 });
 

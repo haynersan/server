@@ -1,10 +1,17 @@
 ﻿#region usings
 
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Shift.Domain.Core.Interfaces;
+using Shift.Infra.CrossCutting.Identity.Authorization;
 using Shift.Infra.CrossCutting.Identity.Commands.Inputs;
 using Shift.Infra.CrossCutting.Identity.Handlers;
 using Shift.Infra.CrossCutting.Identity.Models;
@@ -27,9 +34,9 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
         private readonly SignInManager<Usuario> _signInManager;
 
-        private readonly ILogger _logger;
+        //private readonly ILogger _logger;
 
-        //private readonly TokenDescriptor        _tokenDescriptor;
+        private readonly TokenDescriptor        _tokenDescriptor;
 
         public UsuarioController(
                                     IUnitOfWork             uow,
@@ -37,8 +44,8 @@ namespace Shift.Services.Api.Controllers.Usuarios
                                     UsuarioHandler          usuarioHandler,
                                     UserManager<Usuario>    userManager,
                                     SignInManager<Usuario>  signInManager,
-                                    ILoggerFactory          loggerFactory
-                                    //TokenDescriptor         tokenDescriptor
+                                    //ILoggerFactory          loggerFactory
+                                    TokenDescriptor         tokenDescriptor
 
             ) : base(uow, user)
         {
@@ -49,20 +56,25 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
             _signInManager      = signInManager;
 
-            _logger             = loggerFactory.CreateLogger<UsuarioController>();
+            //_logger             = loggerFactory.CreateLogger<UsuarioController>();
 
-            //_tokenDescriptor    = tokenDescriptor;
+            _tokenDescriptor    = tokenDescriptor;
         }
 
 
         #endregion
 
 
+        private static long ToUnixEpochDate(DateTime date)
+        => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
+
+
+        //Aos 3 horas da aula 19 o Eduardo Pires Ensina a usar as claims
         [HttpPost]
-        [AllowAnonymous]
         [Route("nova-conta")]
-        public IActionResult Adicionar([FromBody] AdicionarUsuarioCommand command)
+        [Authorize(Policy = "PodeGravarUsuario")]
+        public IActionResult Adicionar([FromBody] AdicionarUsuarioCommand command, int version)
         {
 
             var result = _usuarioHandler.Handle(command);
@@ -78,17 +90,81 @@ namespace Shift.Services.Api.Controllers.Usuarios
         [HttpPost]
         [AllowAnonymous]
         [Route("conta")]
-        public IActionResult Login([FromBody] LoginUsuarioCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginUsuarioCommand command)
         {
 
             var result = _usuarioHandler.Handle(command);
 
+            if (_usuarioHandler.Notifications.Any())
+            {
+                return Response(result, _usuarioHandler.Notifications);
+            }
 
-            return Response(result, _usuarioHandler.Notifications);
+            var response = await GerarTokenUsuario(command);
+
+            return Response(response, _usuarioHandler.Notifications);
 
         }
 
 
+
+
+        private async Task<object> GerarTokenUsuario(LoginUsuarioCommand login)
+        {
+            
+            //var user = await _userManager.FindByEmailAsync(login.Email);
+
+            var user = await _userManager.FindByNameAsync(login.UserName);
+
+
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
+
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Sub,   user.Id.ToString()));
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Jti,   Guid.NewGuid().ToString()));
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Iat,   ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
+
+            
+            // Necessário converver para IdentityClaims
+            var identityClaims = new ClaimsIdentity();
+            identityClaims.AddClaims(userClaims);
+
+
+            var handler         = new JwtSecurityTokenHandler();
+
+            var signingConf     = new SigningCredentialsConfiguration();
+
+            var securityToken   = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer              = _tokenDescriptor.Issuer,
+                Audience            = _tokenDescriptor.Audience,
+                SigningCredentials  = signingConf.SigningCredentials,
+                Subject             = identityClaims,
+                NotBefore           = DateTime.Now,
+                Expires             = DateTime.Now.AddMinutes(_tokenDescriptor.MinutesValid)
+            });
+
+
+            var encodedJwt = handler.WriteToken(securityToken);
+            //var orgUser = _organizadorRepository.ObterPorId(Guid.Parse(user.Id));
+
+            var response = new
+            {
+                access_token = encodedJwt,
+                expires_in = DateTime.Now.AddMinutes(_tokenDescriptor.MinutesValid),
+                user = new
+                {
+                    id          = user.Id,
+                    nome        = user.UserName,
+                    matricula   = user.Matricula,
+                    email       = user.Email,
+                    claims      = userClaims.Select(c => new { c.Type, c.Value })
+                }
+            };
+
+            return response;
+        }
     }
 }
 

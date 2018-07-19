@@ -2,8 +2,9 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Shift.Domain.Core.Interfaces;
-using Shift.Infra.CrossCutting.Identity.Commands.Inputs;
+using Shift.Infra.CrossCutting.AspNetFilters;
 using Shift.Infra.CrossCutting.Identity.Handlers;
 using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Infra.Data.Context;
@@ -43,6 +44,16 @@ namespace Shift.Infra.CrossCutting.IoC
             services.AddScoped<ShiftContext>();
 
 
+
+            #endregion
+
+
+            #region Infra.Filtros
+
+            services.AddScoped<ILogger<GlobalExceptionHandlingFilter>, Logger<GlobalExceptionHandlingFilter>>();
+            services.AddScoped<ILogger<GlobalActionLogger>, Logger<GlobalActionLogger>>();
+            services.AddScoped<GlobalExceptionHandlingFilter>();
+            services.AddScoped<GlobalActionLogger>();
 
             #endregion
 

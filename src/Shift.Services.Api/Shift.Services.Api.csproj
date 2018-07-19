@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Shift.Infra.CrossCutting.AspNetFilters\Shift.Infra.CrossCutting.AspNetFilters.csproj" />
     <ProjectReference Include="..\Shift.Infra.CrossCutting.IoC\Shift.Infra.CrossCutting.IoC.csproj" />
   </ItemGroup>
 

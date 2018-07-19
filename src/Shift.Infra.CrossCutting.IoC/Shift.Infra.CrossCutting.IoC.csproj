@@ -13,6 +13,7 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\Shift.Domain.Core\Shift.Domain.Core.csproj" />
+    <ProjectReference Include="..\Shift.Infra.CrossCutting.AspNetFilters\Shift.Infra.CrossCutting.AspNetFilters.csproj" />
     <ProjectReference Include="..\Shift.Infra.CrossCutting.Identity\Shift.Infra.CrossCutting.Identity.csproj" />
     <ProjectReference Include="..\Shift.Infra.Data\Shift.Infra.Data.csproj" />
   </ItemGroup>
