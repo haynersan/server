@@ -34,7 +34,7 @@ namespace Shift.Infra.CrossCutting.Identity.Commands.Inputs
 
             .IsNotNullOrEmpty(UserName, "Usuario", "O usuário deve ser informado")
             .HasMaxLen(UserName, 50, "Usuario", "O usuário deve possuir no máximo 50 caracteres")
-
+    
 
             .IsNotNullOrEmpty(Email, "Email", "O email deve ser informado")
             .IsEmail(Email, "Usuario", "O usuário deve possuir no máximo 50 caracteres")

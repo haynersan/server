@@ -7,6 +7,7 @@ using Shift.Domain.Core.Interfaces;
 using Shift.Infra.CrossCutting.AspNetFilters;
 using Shift.Infra.CrossCutting.Identity.Handlers;
 using Shift.Infra.CrossCutting.Identity.Models;
+using Shift.Infra.CrossCutting.Identity.Repository;
 using Shift.Infra.Data.Context;
 using Shift.Infra.Data.UoW;
 
@@ -29,6 +30,7 @@ namespace Shift.Infra.CrossCutting.IoC
 
             #region Infra.CrossCutting.Identity
 
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<UsuarioHandler, UsuarioHandler>();
             services.AddScoped<IUser, AspNetUser>();
 

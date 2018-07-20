@@ -70,10 +70,11 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
 
 
-        //Aos 3 horas da aula 19 o Eduardo Pires Ensina a usar as claims
+
         [HttpPost]
         [Route("nova-conta")]
-        [Authorize(Policy = "PodeGravarUsuario")]
+        [AllowAnonymous]
+        //[Authorize(Policy = "PodeGravarUsuario")]
         public IActionResult Adicionar([FromBody] AdicionarUsuarioCommand command, int version)
         {
 
@@ -112,8 +113,6 @@ namespace Shift.Services.Api.Controllers.Usuarios
         private async Task<object> GerarTokenUsuario(LoginUsuarioCommand login)
         {
             
-            //var user = await _userManager.FindByEmailAsync(login.Email);
-
             var user = await _userManager.FindByNameAsync(login.UserName);
 
 
@@ -171,6 +170,10 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
 
 
+
+
+
+//Aos 3 horas da aula 19 - uso de claims
 
 
 

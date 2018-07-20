@@ -2,10 +2,12 @@
 
 using Flunt.Notifications;
 using Microsoft.AspNetCore.Identity;
+using Shift.Domain.Core.Enums;
 using Shift.Domain.Core.Interfaces;
 using Shift.Domain.Core.Utils;
 using Shift.Infra.CrossCutting.Identity.Commands.Inputs;
 using Shift.Infra.CrossCutting.Identity.Models;
+using Shift.Infra.CrossCutting.Identity.Repository;
 
 #endregion
 
@@ -18,18 +20,24 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
         IHandler<LoginUsuarioCommand>
     {
 
-        private readonly UserManager<Usuario> _userManager;
+        private readonly UserManager<Usuario>   _userManager;
 
         private readonly SignInManager<Usuario> _signInManager;
+
+        private readonly IUsuarioRepository     _usuarioRepository;
 
 
         public UsuarioHandler(  
                                 UserManager<Usuario>    userManager,
-                                SignInManager<Usuario>  signInManager)
+                                SignInManager<Usuario>  signInManager,
+                                IUsuarioRepository      usuarioRepository)
         {
-            _userManager    = userManager;
 
-            _signInManager  = signInManager;
+            _userManager        = userManager;
+
+            _signInManager      = signInManager;
+
+            _usuarioRepository = usuarioRepository;
         }
 
 
@@ -46,8 +54,22 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
             }
 
 
-            //TODO: Checar se a matrícula já existe;
-            //TODO: Checar se o usuário já existe;
+
+            //Verificar se o Codigo ou Nome informado já está em Uso
+            if (_usuarioRepository.checarSeUsuarioExiste((int)EAcao.Adicionar, null, command.UserName, command.Matricula))
+            {
+                AddNotification("Nome/Matricula", "O Nome ou Matrícula já estão em uso");
+                return new CommandResult(false, "Não foi possível adicionar o registro");
+            }
+
+
+            if (command.UserName.Contains(" "))
+            {
+                AddNotification("Nome", "O Nome não pode conter espaços");
+                return new CommandResult(false, "Não foi possível adicionar o registro");
+            }
+            
+
 
             var user = new Usuario()
             {
