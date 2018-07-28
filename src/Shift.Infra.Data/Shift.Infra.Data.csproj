@@ -18,13 +18,7 @@
 
 
 	<ItemGroup>
-	  <Folder Include="Extensions\" />
-	  <Folder Include="Mappings\" />
-	  <Folder Include="Repository\" />
-	</ItemGroup>
-
-
-	<ItemGroup>
+	  <ProjectReference Include="..\Shift.Domain.Cadastro\Shift.Domain.Cadastro.csproj" />
 	  <ProjectReference Include="..\Shift.Domain.Core\Shift.Domain.Core.csproj" />
 	</ItemGroup>
 

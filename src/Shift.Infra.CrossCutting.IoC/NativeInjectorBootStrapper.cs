@@ -3,12 +3,15 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel;
+using Shift.Domain.Cadastro.ModelsEstatica.TipoBloqueioModel;
 using Shift.Domain.Core.Interfaces;
 using Shift.Infra.CrossCutting.AspNetFilters;
 using Shift.Infra.CrossCutting.Identity.Handlers;
 using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Infra.CrossCutting.Identity.Repository;
 using Shift.Infra.Data.Context;
+using Shift.Infra.Data.Repository.Cadastro;
 using Shift.Infra.Data.UoW;
 
 #endregion
@@ -28,6 +31,7 @@ namespace Shift.Infra.CrossCutting.IoC
             #endregion
 
 
+            
             #region Infra.CrossCutting.Identity
 
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
@@ -37,6 +41,17 @@ namespace Shift.Infra.CrossCutting.IoC
             #endregion
 
 
+
+            #region Infra.Data.Repository.Cadastro
+
+            services.AddScoped<ITipoBloqueioRepository, TipoBloqueioRepository>();
+
+            services.AddScoped<ISituacaoRepository, SituacaoRepository>();
+
+            #endregion
+
+
+            
             #region Infra.Data
 
 
@@ -50,6 +65,7 @@ namespace Shift.Infra.CrossCutting.IoC
             #endregion
 
 
+            
             #region Infra.Filtros
 
             services.AddScoped<ILogger<GlobalExceptionHandlingFilter>, Logger<GlobalExceptionHandlingFilter>>();
@@ -62,3 +78,16 @@ namespace Shift.Infra.CrossCutting.IoC
         }
     }
 }
+
+
+
+/*-------------------------------------------------------------------------------------------------------------------
+    
+    Conceitos de Dependency Injector
+
+    - Singleton:    Cria uma instância que é usada por toda aplicação;
+    
+    - Scoped:       Cria uma instância por requisição dentro do escopo. Ou seja, por request. 
+
+    - Transient:    Gera uma instância a cada vez que você chama um objeto;
+------------------------------------------------------------------------------------------------------------------*/
