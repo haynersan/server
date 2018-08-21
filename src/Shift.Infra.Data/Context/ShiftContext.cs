@@ -3,6 +3,7 @@
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Shift.Domain.Cadastro.EmpresaModel;
 using Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel;
 using Shift.Domain.Cadastro.ModelsEstatica.TipoBloqueioModel;
 using Shift.Infra.Data.Extensions;
@@ -23,6 +24,7 @@ namespace Shift.Infra.Data.Context
 
         public DbSet<Situacao>      Situacao        { get; set; }
 
+        public DbSet<Empresa>       Empresas        { get; set; }
 
         #endregion
 
@@ -37,6 +39,8 @@ namespace Shift.Infra.Data.Context
             modelBuilder.AddConfiguration(new TipoBloqueioMapping());
 
             modelBuilder.AddConfiguration(new SituacaoMapping());
+
+            modelBuilder.AddConfiguration(new EmpresaMapping());
 
             #endregion
 

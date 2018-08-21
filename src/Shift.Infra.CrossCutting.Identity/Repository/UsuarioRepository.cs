@@ -1,11 +1,13 @@
 ﻿#region usings
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Shift.Infra.CrossCutting.Identity.Context;
+using Shift.Infra.CrossCutting.Identity.Models;
 
 #endregion
 
@@ -26,6 +28,7 @@ namespace Shift.Infra.CrossCutting.Identity.Repository
             Db = context;
         }
 
+
         #endregion
 
 
@@ -42,5 +45,25 @@ namespace Shift.Infra.CrossCutting.Identity.Repository
                        commandType: CommandType.StoredProcedure).FirstOrDefault();
         }
 
+
+
+        public bool checarSeIdEhValido(Guid id)
+        {
+
+            return Db.Database.GetDbConnection().Query<bool>("[Usuario].[SP_UsuarioIdEhValido]",
+                   new
+                   {
+                       Id = id.ToString()
+                   },
+                   commandType: CommandType.StoredProcedure).FirstOrDefault();
+
+        }
+
+        public Usuario ObterUsuario(Guid id)
+        {
+            return Db.Database.GetDbConnection().Query<Usuario>("[Usuario].[SP_UsuarioListar]",
+               new { Id = id },
+               commandType: CommandType.StoredProcedure).FirstOrDefault();
+        }
     }
 }

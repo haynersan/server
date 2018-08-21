@@ -113,8 +113,11 @@ namespace Shift.Services.Api.Configurations
             services.AddAuthorization(options =>
             {
 
-                options.AddPolicy("PodeLerUsuario",        policy => policy.RequireClaim("Usuario", "Ler"));
-                options.AddPolicy("PodeGravarUsuario",     policy => policy.RequireClaim("Usuario", "Gravar"));
+                options.AddPolicy("PodeLerUsuario",         policy => policy.RequireClaim("Usuario", "Ler"));
+                options.AddPolicy("PodeGravarUsuario",      policy => policy.RequireClaim("Usuario", "Gravar"));
+
+                options.AddPolicy("PodeLerEmpresa",         policy => policy.RequireClaim("Empresa", "Ler"));
+                options.AddPolicy("PodeGravarEmpresa",      policy => policy.RequireClaim("Empresa", "Gravar"));
 
                 options.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)

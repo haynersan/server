@@ -13,6 +13,9 @@ using Shift.Infra.Data.Context;
 
 namespace Shift.Infra.Data.Repository
 {
+
+   
+
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<TEntity>
     {
 

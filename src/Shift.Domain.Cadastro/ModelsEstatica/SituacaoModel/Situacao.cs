@@ -1,6 +1,8 @@
 ﻿#region usings
 
 using System;
+using System.Collections.Generic;
+using Shift.Domain.Cadastro.EmpresaModel;
 using Shift.Domain.Core.Models;
 
 #endregion
@@ -28,6 +30,10 @@ namespace Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel
         public string   DescSituacao { get; private set; }
 
         public DateTime DataCadastro { get; private set; }
+
+
+        // EF Propriedade de Navegação. Relação é do tipo UM para MUITOS.
+        public virtual ICollection<Empresa> Empresas { get; set; }
 
         #endregion
 

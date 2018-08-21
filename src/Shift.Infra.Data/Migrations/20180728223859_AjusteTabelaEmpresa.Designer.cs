@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shift.Infra.Data.Context;
 
 namespace Shift.Infra.Data.Migrations
 {
     [DbContext(typeof(ShiftContext))]
-    partial class ShiftContextModelSnapshot : ModelSnapshot
+    [Migration("20180728223859_AjusteTabelaEmpresa")]
+    partial class AjusteTabelaEmpresa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,24 +83,6 @@ namespace Shift.Infra.Data.Migrations
                     b.HasOne("Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel.Situacao", "Situacao")
                         .WithMany("Empresas")
                         .HasForeignKey("IdSituacao");
-
-                    b.OwnsOne("Shift.Domain.Core.ValueObjects.CNPJ", "CNPJ", b1 =>
-                        {
-                            b1.Property<string>("EmpresaCodEmpresa");
-
-                            b1.Property<string>("NumeroCNPJ")
-                                .IsRequired()
-                                .HasColumnName("Cnpj")
-                                .HasColumnType("varchar(14)")
-                                .HasMaxLength(14);
-
-                            b1.ToTable("Empresas","Cadastro");
-
-                            b1.HasOne("Shift.Domain.Cadastro.EmpresaModel.Empresa")
-                                .WithOne("CNPJ")
-                                .HasForeignKey("Shift.Domain.Core.ValueObjects.CNPJ", "EmpresaCodEmpresa")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
                 });
 #pragma warning restore 612, 618
         }

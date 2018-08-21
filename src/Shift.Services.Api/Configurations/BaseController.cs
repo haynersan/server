@@ -18,14 +18,15 @@ namespace Shift.Services.Api.Configurations
 
         protected Guid UsuarioDaAplicacao { get; set; }
 
-        private readonly IUnitOfWork _uow;
 
+        private readonly IUnitOfWork _uow;
 
 
         public BaseController(IUnitOfWork uow, IUser user)
         {
             _uow = uow;
 
+ 
             if (user.IsAuthenticated())
             {
                 UsuarioDaAplicacao = user.GetUserId();

@@ -49,7 +49,7 @@ namespace Shift.Services.Api
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-
+           
 
 
             // Configurações de Autenticação, Autorização e JWT.
@@ -76,12 +76,15 @@ namespace Shift.Services.Api
             });
 
 
-            
+            //Adicionei este
+            services.AddCors();
+
+
             // Versionamento do WebApi
             //services.AddApiVersioning("api/v{version}");
 
 
-            
+
             // Configurações do Swagger
             services.AddSwaggerConfig();
 
@@ -111,12 +114,14 @@ namespace Shift.Services.Api
                 c.AllowAnyHeader();
                 c.AllowAnyMethod();
                 c.AllowAnyOrigin();
-                //c.WithOrigins("www.exemplo1.com.br, www.exemplo2.com.br");
+                //c.WithExposedHeaders("X-Pagination-TotalRegisters","X-Pagination-TotalPages");
+                //c.WithHeaders();
+                //c.WithOrigins("http://localhost:4200", "http://localhost:50552", "https://localhost:44390/");
                 //c.WithMethods("POST,GET,PUT,DELETE");
             });
 
-            app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseStaticFiles();
             app.UseMvc();
 
             #endregion

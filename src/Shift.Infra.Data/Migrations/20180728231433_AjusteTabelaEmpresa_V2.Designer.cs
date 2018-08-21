@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shift.Infra.Data.Context;
 
 namespace Shift.Infra.Data.Migrations
 {
     [DbContext(typeof(ShiftContext))]
-    partial class ShiftContextModelSnapshot : ModelSnapshot
+    [Migration("20180728231433_AjusteTabelaEmpresa_V2")]
+    partial class AjusteTabelaEmpresa_V2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

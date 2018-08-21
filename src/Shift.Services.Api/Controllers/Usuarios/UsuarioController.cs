@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Shift.Domain.Core.Interfaces;
+using Shift.Domain.Core.Utils;
 using Shift.Infra.CrossCutting.Identity.Authorization;
 using Shift.Infra.CrossCutting.Identity.Commands.Inputs;
 using Shift.Infra.CrossCutting.Identity.Handlers;
@@ -72,10 +73,10 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
 
         [HttpPost]
-        [Route("nova-conta")]
+        [Route("v1/nova-conta")]
         [AllowAnonymous]
         //[Authorize(Policy = "PodeGravarUsuario")]
-        public IActionResult Adicionar([FromBody] AdicionarUsuarioCommand command, int version)
+        public IActionResult Adicionar([FromBody] AdicionarUsuarioCommand command)
         {
 
             var result = _usuarioHandler.Handle(command);
@@ -87,10 +88,30 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
 
 
+        [HttpPost]
+        [Route("v1/editar-conta")]
+        [Authorize()]
+        //[Authorize(Policy = "PodeGravarUsuario")]
+        public IActionResult Editar([FromBody] EditarUsuarioCommand command)
+        {
+
+            var result = _usuarioHandler.Handle(command);
+
+
+            return Response(result, _usuarioHandler.Notifications);
+
+        }
+
+
+
+
+
+
+
 
         [HttpPost]
-        [AllowAnonymous]
-        [Route("conta")]
+        //[AllowAnonymous]
+        [Route("v1/conta")]
         public async Task<IActionResult> Login([FromBody] LoginUsuarioCommand command)
         {
 
@@ -146,7 +167,7 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
 
             var encodedJwt = handler.WriteToken(securityToken);
-            //var orgUser = _organizadorRepository.ObterPorId(Guid.Parse(user.Id));
+
 
             var response = new
             {
@@ -154,10 +175,10 @@ namespace Shift.Services.Api.Controllers.Usuarios
                 expires_in = DateTime.Now.AddMinutes(_tokenDescriptor.MinutesValid),
                 user = new
                 {
-                    id          = user.Id,
-                    nome        = user.UserName,
-                    matricula   = user.Matricula,
-                    email       = user.Email,
+                    id = user.Id,
+                    nome = user.UserName,
+                    matricula = user.Matricula,
+                    email = user.Email,
                     claims      = userClaims.Select(c => new { c.Type, c.Value })
                 }
             };

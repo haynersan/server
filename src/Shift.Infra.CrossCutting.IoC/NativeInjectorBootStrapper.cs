@@ -1,8 +1,11 @@
 ﻿#region usings
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Shift.Domain.Cadastro.EmpresaModel.Handlers;
+using Shift.Domain.Cadastro.EmpresaModel.Repository;
 using Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel;
 using Shift.Domain.Cadastro.ModelsEstatica.TipoBloqueioModel;
 using Shift.Domain.Core.Interfaces;
@@ -31,7 +34,19 @@ namespace Shift.Infra.CrossCutting.IoC
             #endregion
 
 
-            
+
+            #region Domain.Cadastro
+
+            services.AddScoped<EmpresaHandler, EmpresaHandler>();
+
+            //Exemplo Padrao Eduardo Pires Aula 15 Time: 49:29
+            //services.AddScoped<IHandler<AdicionarEmpresaCommand>, EmpresaHandler>();
+
+
+            #endregion
+
+
+
             #region Infra.CrossCutting.Identity
 
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
@@ -47,6 +62,8 @@ namespace Shift.Infra.CrossCutting.IoC
             services.AddScoped<ITipoBloqueioRepository, TipoBloqueioRepository>();
 
             services.AddScoped<ISituacaoRepository, SituacaoRepository>();
+
+            services.AddScoped<IEmpresaRepository, EmpresaRepository>();
 
             #endregion
 
