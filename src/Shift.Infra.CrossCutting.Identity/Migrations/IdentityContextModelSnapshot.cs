@@ -117,12 +117,13 @@ namespace Shift.Infra.CrossCutting.Identity.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<bool>("Excluido");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("Matricula")
-                        .IsRequired()
                         .HasMaxLength(6);
 
                     b.Property<string>("NormalizedEmail")

@@ -1,5 +1,4 @@
-﻿using Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel;
-using Shift.Domain.Core.Interfaces;
+﻿using Shift.Domain.Core.Interfaces;
 
 namespace Shift.Domain.Cadastro.EmpresaModel.Commands.Results
 {

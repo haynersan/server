@@ -1,5 +1,6 @@
 ﻿#region usings
 
+using System;
 using Flunt.Notifications;
 using Shift.Domain.Core.ValueObjects;
 

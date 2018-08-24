@@ -11,7 +11,6 @@ using Shift.Domain.Core.Interfaces;
 using Shift.Services.Api.Configurations;
 using System.Linq;
 using System;
-using Newtonsoft.Json;
 
 #endregion
 
@@ -24,10 +23,10 @@ namespace Shift.Services.Api.Controllers.Cadastro
         #region Config
 
 
-        private readonly EmpresaHandler _handler;
+        private readonly EmpresaHandler         _handler;
 
 
-        private readonly IEmpresaRepository _empresaRepository;
+        private readonly IEmpresaRepository     _empresaRepository;
 
 
         public EmpresaController(
@@ -37,9 +36,9 @@ namespace Shift.Services.Api.Controllers.Cadastro
                                     IEmpresaRepository  empresaRepository) : base(uow, user)
         {
 
-            _handler = empresaHandler;
+            _handler            = empresaHandler;
 
-            _empresaRepository = empresaRepository;
+            _empresaRepository  = empresaRepository;
         }
 
 
@@ -49,25 +48,21 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         #region Escrita
 
-//----------------------------------------------------------------------------- P O S T -----------------------------------------------------------------------------------------
+
 
         [HttpPost]
         [Route("v1/empresas")]
         [Authorize()]
         public IActionResult Post([FromBody] AdicionarEmpresaCommand command)
         {
-
             var result = _handler.Handle(command);
 
             return Response(result, _handler.Notifications);
 
         }
+        
+        
 
-        
-        
-//----------------------------------------------------------------------------- P U T -----------------------------------------------------------------------------------------
-
-        
         [HttpPut]
         [Route("v1/empresas")]
         [Authorize()]
@@ -82,9 +77,6 @@ namespace Shift.Services.Api.Controllers.Cadastro
         
 
 
-//----------------------------------------------------------------------------- D E L E T E -----------------------------------------------------------------------------------------
-
-        
         [HttpDelete]
         [Route("v1/empresas/{id}")]
         [Authorize(Policy = "PodeGravarEmpresa")]
@@ -100,11 +92,14 @@ namespace Shift.Services.Api.Controllers.Cadastro
         }
 
 
+        
         #endregion
 
 
 
         #region Leitura
+
+
 
         [HttpGet]
         [Route("")]
@@ -118,18 +113,28 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         [HttpGet]
         [Route("v1/empresas")]
-        //[ResponseCache(Duration = 60)]
         [Authorize()]
-        public IActionResult ObterTodos(int pagina = 1, int itensPorPagina = 3, string nome = null)
+        //[ResponseCache(Duration = 60)] //Curso do Balta.IO
+        public IEnumerable<EmpresaCommandResult> Listar()
+        {
+            return _empresaRepository.ListarEmpresas();
+        }
+
+
+        
+        [HttpGet]
+        [Route("v1/empresas-paginadas")]
+        [Authorize()]
+        public IActionResult ListarPaginado(int pagina = 1, int qtdeItensPorPagina = 3, string nome = null)
         {
 
 
-            if (pagina <= 0 || itensPorPagina <= 0)
+            if (pagina <= 0 || qtdeItensPorPagina <= 0)
                return BadRequest("Os parâmetros pagina e tamanhoPagina devem ser maiores que zero.");
 
 
 
-            if (itensPorPagina > 10)
+            if (qtdeItensPorPagina > 10)
                     return BadRequest("O tamanho máximo de página permitido é 10.");
 
 
@@ -137,9 +142,11 @@ namespace Shift.Services.Api.Controllers.Cadastro
             int totalRegistros = _empresaRepository.Buscar(e => e.Excluido == false).ToList().Count;
 
 
+            //v1
+            //int totalPaginas = (int)Math.Ceiling(_empresaRepository.Buscar(e => e.Excluido == false).ToList().Count / Convert.ToDecimal(itensPorPagina));
 
-            int totalPaginas = (int)Math.Ceiling(_empresaRepository.Buscar(e => e.Excluido == false).ToList().Count / Convert.ToDecimal(itensPorPagina));
 
+            int totalPaginas = (int)Math.Ceiling(totalRegistros / Convert.ToDecimal(qtdeItensPorPagina));
 
 
             if (pagina > totalPaginas)
@@ -157,13 +164,13 @@ namespace Shift.Services.Api.Controllers.Cadastro
             var resultado = new
             {
 
-                dados           = _empresaRepository.ObterEmpresas(pagina, itensPorPagina, nome),
+                dados           = _empresaRepository.ListarEmpresasPaginadas(pagina, qtdeItensPorPagina, nome),
 
 
                 paginaAtual     = pagina.ToString(),
 
 
-                itensPorPagina  = itensPorPagina.ToString(),
+                itensPorPagina  = qtdeItensPorPagina.ToString(),
 
 
                 totalPaginas    = totalPaginas.ToString(),
@@ -188,13 +195,6 @@ namespace Shift.Services.Api.Controllers.Cadastro
         }
 
 
-
-        [HttpGet]
-        [Route("v1/empresas/nome/{nome}")]
-        public IEnumerable<EmpresaCommandResult> ObterPorNome(string nome)
-        {
-            return _empresaRepository.ObterPorNome(nome);
-        }
 
         #endregion
 

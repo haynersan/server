@@ -13,7 +13,7 @@ namespace Shift.Infra.CrossCutting.Identity.Context
     {
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
-
+            
         }
     }
 }

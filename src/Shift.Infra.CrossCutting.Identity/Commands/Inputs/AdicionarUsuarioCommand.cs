@@ -22,6 +22,8 @@ namespace Shift.Infra.CrossCutting.Identity.Commands.Inputs
 
             Matricula   = matricula;
 
+            Excluido    = false;
+
         }
 
         

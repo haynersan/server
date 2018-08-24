@@ -27,6 +27,8 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Commands.Inputs
 
             Excluido    = false;
 
+            
+
         }
 
 

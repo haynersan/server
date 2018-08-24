@@ -18,7 +18,7 @@ namespace Shift.Services.Api.Controllers.Cadastro
         
         #region Config
 
-        private ITipoBloqueioRepository _tipoBloqueioRepository;
+        private readonly ITipoBloqueioRepository _tipoBloqueioRepository;
 
         public TipoBloqueioController(
                                         IUnitOfWork uow,
@@ -35,15 +35,18 @@ namespace Shift.Services.Api.Controllers.Cadastro
         #region Leitura
 
 
+
         [HttpGet]
         [Route("v1/tipo-bloqueio")]
         [AllowAnonymous]
-        public IEnumerable<TipoBloqueioCommandResult> ObterTodos()
+        public IEnumerable<TipoBloqueioCommandResult> Listar()
         {
             return _tipoBloqueioRepository.ListarTiposBloqueio();
         }
 
 
+        
         #endregion
+
     }
 }

@@ -62,27 +62,28 @@ namespace Shift.Services.Api.Configurations
             #region ConfiguracoesIdentityAdicionais
 
             
-             services.ConfigureApplicationCookie(options =>
-             {
-                 options.Cookie.HttpOnly = true;
-             });
+             //services.ConfigureApplicationCookie(options =>
+             //{
+             //    options.Cookie.HttpOnly = true;
+             //});
 
              #endregion
 
 
-            /*
+            
              #region Cookie
 
-             services.ConfigureApplicationCookie(options =>
-             {
-                 options.Cookie.HttpOnly = true;
-                 options.ExpireTimeSpan = TimeSpan.FromMinutes(05);
-                 //options.LoginPath
-                 //options.LogoutPath
-                 //options.AccessDeniedPath
-                 options.SlidingExpiration = true; //Indica que ao atingir a metade de expiração do tempo definido para cookie, ele será renovado automáticamente.
-             });
-             */
+             //services.ConfigureApplicationCookie(options =>
+             //{
+             //    options.Cookie.HttpOnly = true;
+             //    options.ExpireTimeSpan = TimeSpan.FromMinutes(05);
+             //    //options.LoginPath
+             //    //options.LogoutPath
+             //    //options.AccessDeniedPath
+             //    options.SlidingExpiration = true; //Indica que ao atingir a metade de expiração do tempo definido para cookie, ele será renovado automáticamente.
+             //});
+
+            #endregion
 
 
 

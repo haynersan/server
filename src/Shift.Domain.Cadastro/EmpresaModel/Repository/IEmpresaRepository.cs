@@ -15,9 +15,9 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Repository
 
         EmpresaCommandResult ObterPorCodigo(string codigo);
 
-        IEnumerable<EmpresaCommandResult> ObterPorNome(string nome);
+        IEnumerable<EmpresaCommandResult> ListarEmpresasPaginadas(int pagina, int qtdeItensPorPagina, string nome);
 
-        IEnumerable<EmpresaCommandResult> ObterEmpresas(int pagina, int quantidadeItens, string nome);
+        IEnumerable<EmpresaCommandResult> ListarEmpresas();
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Repository
 
         #region Validacoes
 
-        bool checarSeEmpresaExiste(int acao, string codEmpresa, string nome, string cnpj);
+        bool ChecarSeEmpresaExiste(int acao, string codEmpresa, string nome, string cnpj);
 
         #endregion
     }

@@ -19,13 +19,14 @@ namespace Shift.Infra.Data.Repository.Cadastro
     {
 
 
+
         public EmpresaRepository(ShiftContext context) : base(context)
         {
         }
 
 
 
-        public bool checarSeEmpresaExiste(int acao, string codEmpresa, string nome, string cnpj)
+        public bool ChecarSeEmpresaExiste(int acao, string codEmpresa, string nome, string cnpj)
         {
             return Db.Database.GetDbConnection().Query<bool>("[Cadastro].[SP_EmpresaChecar]",
                     new
@@ -40,16 +41,21 @@ namespace Shift.Infra.Data.Repository.Cadastro
 
 
 
-        public IEnumerable<EmpresaCommandResult> ObterEmpresas(int pagina, int quantidadeItens, string nome)
+        public IEnumerable<EmpresaCommandResult> ListarEmpresas()
         {
+
             return Db.Database.GetDbConnection().Query<EmpresaCommandResult>("[Cadastro].[SP_EmpresaListar]",
-                new { Nome = nome},
-                commandType: CommandType.StoredProcedure).ToList().Skip(quantidadeItens * (pagina - 1)).Take(quantidadeItens);
+                commandType: CommandType.StoredProcedure).ToList();
         }
 
 
 
-
+        public IEnumerable<EmpresaCommandResult> ListarEmpresasPaginadas(int pagina, int qtdeItensPorPagina, string nome)
+        {
+            return Db.Database.GetDbConnection().Query<EmpresaCommandResult>("[Cadastro].[SP_EmpresaListar]",
+                new { Nome = nome},
+                commandType: CommandType.StoredProcedure).ToList().Skip(qtdeItensPorPagina * (pagina - 1)).Take(qtdeItensPorPagina);
+        }
 
 
 
@@ -61,27 +67,22 @@ namespace Shift.Infra.Data.Repository.Cadastro
         }
 
 
-
-        public IEnumerable<EmpresaCommandResult> ObterPorNome(string nome)
-        {
-            return Db.Database.GetDbConnection().Query<EmpresaCommandResult>("[Cadastro].[SP_EmpresaListarPorNome]",
-             new { Nome = nome },
-             commandType: CommandType.StoredProcedure).ToList();
-        }
-
-
-        /*
-        public override void RemoverString(string codigo)
-        {
-
-            var empresa = Buscar(e => e.CodEmpresa == codigo && e.Excluido == false).FirstOrDefault();
-
-
-            empresa.Excluir();
-
-
-            Atualizar(empresa);
-        }*/
-
     }
 }
+
+
+
+
+
+/*
+public override void RemoverString(string codigo)
+{
+
+    var empresa = Buscar(e => e.CodEmpresa == codigo && e.Excluido == false).FirstOrDefault();
+
+
+    empresa.Excluir();
+
+
+    Atualizar(empresa);
+}*/

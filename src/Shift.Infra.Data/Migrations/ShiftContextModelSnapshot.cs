@@ -40,6 +40,58 @@ namespace Shift.Infra.Data.Migrations
                     b.ToTable("Empresas","Cadastro");
                 });
 
+            modelBuilder.Entity("Shift.Domain.Cadastro.LogAuditoriaModel.LogAuditoria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Acao")
+                        .IsRequired()
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<DateTime>("DataOperacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("JsonResult")
+                        .IsRequired()
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<string>("Modulo")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Schema")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Tabela")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("UserIdLogado")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogAuditorias","Cadastro");
+                });
+
+            modelBuilder.Entity("Shift.Domain.Cadastro.ModelsEstatica.ClaimModel.ClaimValue", b =>
+                {
+                    b.Property<int>("Codigo")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Excluido");
+
+                    b.Property<string>("Valor")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
+                    b.HasKey("Codigo");
+
+                    b.ToTable("ClaimValues","Estatico");
+                });
+
             modelBuilder.Entity("Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel.Situacao", b =>
                 {
                     b.Property<int>("IdSituacao");
@@ -47,7 +99,7 @@ namespace Shift.Infra.Data.Migrations
                     b.Property<DateTime>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("date")
-                        .HasDefaultValue(new DateTime(2018, 7, 28, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2018, 8, 23, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<string>("DescSituacao")
                         .IsRequired()
@@ -57,7 +109,7 @@ namespace Shift.Infra.Data.Migrations
 
                     b.HasKey("IdSituacao");
 
-                    b.ToTable("Situacao","Estatico");
+                    b.ToTable("Situacoes","Estatico");
                 });
 
             modelBuilder.Entity("Shift.Domain.Cadastro.ModelsEstatica.TipoBloqueioModel.TipoBloqueio", b =>
@@ -73,7 +125,7 @@ namespace Shift.Infra.Data.Migrations
 
                     b.HasKey("Codigo");
 
-                    b.ToTable("TipoBloqueio","Estatico");
+                    b.ToTable("TipoBloqueios","Estatico");
                 });
 
             modelBuilder.Entity("Shift.Domain.Cadastro.EmpresaModel.Empresa", b =>

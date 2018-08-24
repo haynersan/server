@@ -1,9 +1,12 @@
 ﻿#region usings
 
+using System;
 using System.Linq;
 using Flunt.Notifications;
+using Newtonsoft.Json;
 using Shift.Domain.Cadastro.EmpresaModel.Commands.Inputs;
 using Shift.Domain.Cadastro.EmpresaModel.Repository;
+using Shift.Domain.Cadastro.LogAuditoriaModel;
 using Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel;
 using Shift.Domain.Core.Enums;
 using Shift.Domain.Core.Interfaces;
@@ -23,19 +26,31 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Handlers
 
     {
 
-        //TODO: Implementar a Gestão de Log de Auditoria
+        protected Guid UserIdLogado;
 
-        private readonly IEmpresaRepository     _empresaRepository;
+        private readonly IEmpresaRepository         _empresaRepository;
+
+        private readonly ISituacaoRepository        _situacaoRepository;
+
+        private readonly ILogAuditoriaRepository    _logAuditoriaRepository;
 
 
-        private readonly ISituacaoRepository    _situacaoRepository;
-
-
-        public EmpresaHandler(IEmpresaRepository empresaRepository, ISituacaoRepository situacaoRepository)
+        public EmpresaHandler(IUser user, IEmpresaRepository empresaRepository, ISituacaoRepository situacaoRepository, ILogAuditoriaRepository logAuditoriaRepository)
         {
-            _empresaRepository  = empresaRepository;
 
-            _situacaoRepository = situacaoRepository;
+
+            if (user.IsAuthenticated())
+            {
+                UserIdLogado = user.GetUserId();
+            }
+
+            _empresaRepository          = empresaRepository;
+
+
+            _situacaoRepository         = situacaoRepository;
+
+
+            _logAuditoriaRepository     = logAuditoriaRepository;
         }
 
 
@@ -53,7 +68,7 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Handlers
 
 
             //Verificar se o Codigo ou Nome informado já está em Uso
-            if (_empresaRepository.checarSeEmpresaExiste((int)EAcao.Adicionar, command.CodEmpresa, command.Nome, command.Cnpj))
+            if (_empresaRepository.ChecarSeEmpresaExiste((int)EAcao.Adicionar, command.CodEmpresa, command.Nome, command.Cnpj))
                 AddNotification("Código/Nome/CNPJ", "O Código, Nome ou CNPJ já estão em uso");
 
 
@@ -71,7 +86,7 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Handlers
 
 
             //Auditoria
-            //var auditoria = new LogAuditoria("Cadastro", empresa.GetType().Name, EAcao.Adicionar, empresa.GetType().Namespace, JsonConvert.SerializeObject(empresa));
+            var auditoria = new LogAuditoria("Cadastro", empresa.GetType().Name, EAcao.Adicionar, empresa.GetType().Namespace, JsonConvert.SerializeObject(command), UserIdLogado );
 
 
 
@@ -92,9 +107,9 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Handlers
             // Salvar as Informações
             _empresaRepository.Adicionar(empresa);
 
-            
-            
-            //_auditoriaRepository.Adicionar(auditoria);
+
+
+            _logAuditoriaRepository.Adicionar(auditoria);
 
 
 
@@ -129,7 +144,7 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Handlers
 
             
             //Verificar se o Codigo ou Nome informado já está em Uso
-            if (_empresaRepository.checarSeEmpresaExiste((int)EAcao.Atualizar, command.CodEmpresa, command.Nome, command.Cnpj))
+            if (_empresaRepository.ChecarSeEmpresaExiste((int)EAcao.Atualizar, command.CodEmpresa, command.Nome, command.Cnpj))
                 AddNotification("Código/Nome/CNPJ", "O Código, Nome ou CNPJ já estão em uso");
 
 

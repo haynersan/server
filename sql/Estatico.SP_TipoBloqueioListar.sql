@@ -1,30 +1,10 @@
 USE [SHIFT]
 GO
 
-/****** Object:  StoredProcedure [Estatico].[SP_TipoBloqueioListar]    Script Date: 27/07/2018 19:58:20 ******/
-SET ANSI_NULLS ON
-GO
+DECLARE @RC int
 
-SET QUOTED_IDENTIFIER ON
-GO
+-- TODO: Defina valores de parâmetros aqui.
 
-
-CREATE PROCEDURE [Estatico].[SP_TipoBloqueioListar]
-
-AS
-BEGIN
-
-	SELECT
-
-		Codigo,
-
-		Tipo
-
-	FROM Estatico.TipoBloqueio
-	
-	WHERE
-		Excluido = 0;
-
-END;
+EXECUTE @RC = [Estatico].[SP_TipoBloqueioListar] 
 GO
 

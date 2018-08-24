@@ -49,7 +49,7 @@ namespace Shift.Infra.Data.Mappings.Cadastro
 
             builder.Ignore(x => x.Invalid);
 
-            builder.ToTable("Situacao", "Estatico");
+            builder.ToTable("Situacoes", "Estatico");
         }
     }
 }

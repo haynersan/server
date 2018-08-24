@@ -1,38 +1,10 @@
 USE [SHIFT]
 GO
 
-/****** Object:  StoredProcedure [Estatico].[SP_SituacaoListar]    Script Date: 28/07/2018 11:45:58 ******/
-SET ANSI_NULLS ON
-GO
+DECLARE @RC int
 
-SET QUOTED_IDENTIFIER ON
-GO
+-- TODO: Defina valores de parâmetros aqui.
 
-
-
-CREATE PROCEDURE [Estatico].[SP_SituacaoListar]
-
-AS
-BEGIN
-
-	SELECT
-
-		IdSituacao,
-
-		DescSituacao
-
-	FROM Estatico.Situacao
-	
-	WHERE
-		Excluido = 0
-
-	ORDER BY
-
-		DescSituacao;
-
-END;
-
-
-
+EXECUTE @RC = [Estatico].[SP_SituacaoListar] 
 GO
 

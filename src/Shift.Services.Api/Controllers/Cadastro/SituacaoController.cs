@@ -34,9 +34,8 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         [HttpGet]
         [Route("v1/situacao")]
-        //[AllowAnonymous]
         [Authorize()]
-        public IEnumerable<SituacaoCommandResult> ObterTodos()
+        public IEnumerable<SituacaoCommandResult> Listar()
         {
             return _situacaoRepository.ListarSituacao();
         }

@@ -43,7 +43,7 @@ namespace Shift.Infra.Data.Mappings.Cadastro
 
             builder.Ignore(x => x.Invalid);
 
-            builder.ToTable("TipoBloqueio", "Estatico");
+            builder.ToTable("TipoBloqueios", "Estatico");
         }
     }
 }

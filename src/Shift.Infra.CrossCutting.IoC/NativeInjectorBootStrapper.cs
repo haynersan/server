@@ -1,15 +1,17 @@
 ﻿#region usings
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Shift.Domain.Cadastro.EmpresaModel.Handlers;
 using Shift.Domain.Cadastro.EmpresaModel.Repository;
+using Shift.Domain.Cadastro.LogAuditoriaModel;
+using Shift.Domain.Cadastro.ModelsEstatica;
 using Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel;
 using Shift.Domain.Cadastro.ModelsEstatica.TipoBloqueioModel;
 using Shift.Domain.Core.Interfaces;
 using Shift.Infra.CrossCutting.AspNetFilters;
+using Shift.Infra.CrossCutting.Identity.Context;
 using Shift.Infra.CrossCutting.Identity.Handlers;
 using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Infra.CrossCutting.Identity.Repository;
@@ -27,6 +29,7 @@ namespace Shift.Infra.CrossCutting.IoC
         public static void RegisterServices(IServiceCollection services)
         {
 
+            
             #region AspNet
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -49,9 +52,10 @@ namespace Shift.Infra.CrossCutting.IoC
 
             #region Infra.CrossCutting.Identity
 
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<UsuarioHandler, UsuarioHandler>();
-            services.AddScoped<IUser, AspNetUser>();
+            services.AddScoped<IUsuarioRepository,  UsuarioRepository>();
+            services.AddScoped<UsuarioHandler,      UsuarioHandler>();
+            services.AddScoped<Usuario,             Usuario>();
+            services.AddScoped<IUser,               AspNetUser>();
 
             #endregion
 
@@ -59,12 +63,17 @@ namespace Shift.Infra.CrossCutting.IoC
 
             #region Infra.Data.Repository.Cadastro
 
+            services.AddScoped<IClaimValueRepository,   ClaimValueRepository>();
+
+            services.AddScoped<IEmpresaRepository,      EmpresaRepository>();
+
+            services.AddScoped<ILogAuditoriaRepository, LogAuditoriaRepository>();
+
+            services.AddScoped<ISituacaoRepository,     SituacaoRepository>();
+
             services.AddScoped<ITipoBloqueioRepository, TipoBloqueioRepository>();
 
-            services.AddScoped<ISituacaoRepository, SituacaoRepository>();
-
-            services.AddScoped<IEmpresaRepository, EmpresaRepository>();
-
+         
             #endregion
 
 
@@ -76,6 +85,7 @@ namespace Shift.Infra.CrossCutting.IoC
 
 
             services.AddScoped<ShiftContext>();
+            services.AddScoped<IdentityContext>();
 
 
 

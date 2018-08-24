@@ -1,6 +1,11 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Collections.Generic;
+using Shift.Infra.CrossCutting.Identity.Commands.Results;
 using Shift.Infra.CrossCutting.Identity.Models;
+
+#endregion
 
 namespace Shift.Infra.CrossCutting.Identity.Repository
 {
@@ -9,13 +14,39 @@ namespace Shift.Infra.CrossCutting.Identity.Repository
 
         #region Validacoes
 
-        bool checarSeUsuarioExiste(int acao, Guid? id, string userName, string matricula);
+        bool ChecarSeUsuarioExiste(int acao, Guid? id, string userName, string matricula);
 
-        bool checarSeIdEhValido(Guid id);
+        bool ChecarSeIdEhValido(Guid id, bool excluido);
+
+        bool ChecarSeUsuarioMovimenta(Guid id);
+
+        bool ChecarSeUsuarioClaimExiste(Guid userId, string claimType, string claimValue);
 
         #endregion
 
-        Usuario ObterUsuario(Guid id);
+
+        #region Leitura
+
+
+        Usuario ObterUsuario(Guid id, bool excluido);
+
+
+        IEnumerable<UsuarioCommandResult> ListarUsuarios(bool excluido);
+
+
+        IEnumerable<UsuarioCommandResult> ListarUsuariosPaginados(int pagina, int qtdeItensPorPagina, string nomeUsuario, bool excluido);
+
+
+        IEnumerable<UsuarioCommandResult> TotalizarUsuarios(bool excluido);
+
+
+        IEnumerable<UsuarioClaimCommandResult> ListarUsuarioClaims(int pagina, int qtdeItensPorPagina, string nomeUsuario);
+
+
+        IEnumerable<UsuarioClaimCommandResult> TotalizarUsuarioClaims();
+
+        
+        #endregion
 
     }
 }
