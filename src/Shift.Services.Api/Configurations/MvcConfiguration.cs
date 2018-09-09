@@ -1,9 +1,13 @@
 ﻿#region usings
 
 using System;
+using System.IO.Compression;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -23,17 +27,34 @@ namespace Shift.Services.Api.Configurations
         {
 
 
+
+
+
+
+            //Remove os dados NULL dos responses. Ajuda a melhorar a Performance da Aplicação. 
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options =>
+               {
+                   options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+               });
+
+
+
             if (services == null) throw new ArgumentNullException(nameof(services));
 
 
+
             var tokenConfigurations = new TokenDescriptor();
+
 
             new ConfigureFromConfigurationOptions<TokenDescriptor>(
                     configuration.GetSection("JwtTokenOptions"))
                 .Configure(tokenConfigurations);
 
 
+
             services.AddSingleton(tokenConfigurations);
+
 
 
             services.AddIdentity<Usuario, UsuarioRole>()

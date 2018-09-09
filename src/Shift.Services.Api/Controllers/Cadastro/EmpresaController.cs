@@ -52,7 +52,8 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         [HttpPost]
         [Route("v1/empresas")]
-        [Authorize()]
+        [Authorize(Policy = "PodeGravarEmpresa")]
+        // [AllowAnonymous]
         public IActionResult Post([FromBody] AdicionarEmpresaCommand command)
         {
             var result = _handler.Handle(command);
@@ -65,7 +66,7 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         [HttpPut]
         [Route("v1/empresas")]
-        [Authorize()]
+        //[Authorize()]
         public IActionResult Put([FromBody] AtualizarEmpresaCommand command)
         {
 
@@ -79,7 +80,7 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         [HttpDelete]
         [Route("v1/empresas/{id}")]
-        [Authorize(Policy = "PodeGravarEmpresa")]
+        //[Authorize(Policy = "PodeGravarEmpresa")]
         public IActionResult Delete(string id)
         {
 
@@ -113,8 +114,8 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         [HttpGet]
         [Route("v1/empresas")]
-        [Authorize()]
-        //[ResponseCache(Duration = 60)] //Curso do Balta.IO
+        //[Authorize()]
+        //[ResponseCache(Duration = 60)]
         public IEnumerable<EmpresaCommandResult> Listar()
         {
             return _empresaRepository.ListarEmpresas();
@@ -124,7 +125,7 @@ namespace Shift.Services.Api.Controllers.Cadastro
         
         [HttpGet]
         [Route("v1/empresas-paginadas")]
-        [Authorize()]
+        // [Authorize()]
         public IActionResult ListarPaginado(int pagina = 1, int qtdeItensPorPagina = 3, string nome = null)
         {
 
@@ -188,7 +189,7 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         [HttpGet]
         [Route("v1/empresas/{codigo}")]
-        [Authorize()]
+        //[Authorize()]
         public EmpresaCommandResult ObterPorCodigo(string codigo)
         {
             return _empresaRepository.ObterPorCodigo(codigo);

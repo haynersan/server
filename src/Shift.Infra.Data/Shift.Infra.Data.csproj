@@ -4,13 +4,26 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20180908154755_AjusteModelCentroCusto.cs" />
+    <Compile Remove="Migrations\20180908155405_AjusteModelCentroCusto_v2.cs" />
+    <Compile Remove="Migrations\20180908160038_AjusteModelCentroCusto_v3.cs" />
+    <Compile Remove="Migrations\20180908161108_CentroCusto_v1.cs" />
+    <Compile Remove="Migrations\20180908164616_CentroCusto_v1.cs" />
+    <Compile Remove="Migrations\20180908182434_CentroCusto_AlteradoChavePrimaria.cs" />
+    <Compile Remove="Migrations\20180908182807_CentroCusto_AlteradoChavePrimaria.cs" />
+  </ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="dapper" Version="1.50.5" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.2">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />

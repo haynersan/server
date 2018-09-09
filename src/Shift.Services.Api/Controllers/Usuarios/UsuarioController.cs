@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Shift.Domain.Cadastro.ModelsEstatica;
@@ -144,7 +145,7 @@ namespace Shift.Services.Api.Controllers.Usuarios
 
 
         [HttpPut]
-        [Route("v1/usuarios")]
+        [Route("v1/usuarios-excluir")]
         [Authorize()]
         public async Task<IActionResult> Delete([FromBody] ExcluirUsuarioCommand command)
         {
@@ -161,7 +162,9 @@ namespace Shift.Services.Api.Controllers.Usuarios
             user.Excluido = command.Excluido;
 
 
-            var result = await _userManager.UpdateAsync(user);
+            //var result = await _userManager.UpdateAsync(user);
+
+            var result = await _userManager.DeleteAsync(user);
 
 
             if (!result.Succeeded)
@@ -181,6 +184,13 @@ namespace Shift.Services.Api.Controllers.Usuarios
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginUsuarioCommand command)
         {
+
+            var user = await _userManager.FindByNameAsync(command.UserName);
+
+            if (user == null)
+            {
+                return BadRequest("O usuário informado não existe");
+            }
 
             var result = _usuarioHandler.Handle(command);
 
@@ -351,9 +361,23 @@ namespace Shift.Services.Api.Controllers.Usuarios
         [HttpGet]
         [Route("v1/claim-types")]
         [Authorize()]
-        public IEnumerable<ClaimTypeCommandResult> ListarClaimTypes()
+        public IEnumerable<ClaimTypeCommandResult> ListarClaimTypes([FromServices]IMemoryCache cache)
         {
-            return _claimValueRepository.ListarClaimTypes();
+
+
+            IEnumerable<ClaimTypeCommandResult> dadosJSON = cache.GetOrCreate<IEnumerable<ClaimTypeCommandResult>>("", context =>
+            {
+
+                context.SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
+
+                context.SetPriority(CacheItemPriority.High);
+
+                return _claimValueRepository.ListarClaimTypes();
+            });
+
+
+            return dadosJSON;
+
         }
 
 
@@ -361,9 +385,23 @@ namespace Shift.Services.Api.Controllers.Usuarios
         [HttpGet]
         [Route("v1/claim-values")]
         [Authorize()]
-        public IEnumerable<ClaimValueCommandResult> ListarClaimValues()
+        public IEnumerable<ClaimValueCommandResult> ListarClaimValues([FromServices]IMemoryCache cache)
         {
-            return _claimValueRepository.ListarClaimValues();
+
+
+            IEnumerable<ClaimValueCommandResult> dadosJSON = cache.GetOrCreate<IEnumerable<ClaimValueCommandResult>>("", context =>
+            {
+
+                context.SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
+
+                context.SetPriority(CacheItemPriority.High);
+
+                return _claimValueRepository.ListarClaimValues();
+            });
+
+
+            return dadosJSON;
+
         }
 
 
@@ -476,10 +514,10 @@ namespace Shift.Services.Api.Controllers.Usuarios
                 expires_in = DateTime.Now.AddMinutes(_tokenDescriptor.MinutesValid),
                 user = new
                 {
-                    id = user.Id,
-                    nome = user.UserName,
-                    matricula = user.Matricula,
-                    email = user.Email,
+                    id          = user.Id,
+                    nome        = user.UserName,
+                    matricula   = user.Matricula,
+                    email       = user.Email,
                     claims      = userClaims.Select(c => new { c.Type, c.Value })
                 }
             };

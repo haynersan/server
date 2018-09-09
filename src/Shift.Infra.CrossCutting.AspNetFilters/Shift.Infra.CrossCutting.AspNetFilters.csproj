@@ -9,8 +9,8 @@
 		<PackageReference Include="microsoft.aspnetcore.hosting.abstractions" Version="2.1.1" />
 		<PackageReference Include="microsoft.aspnetcore.http.abstractions" Version="2.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.1.1" />
-		<PackageReference Include="microsoft.aspnetcore.mvc.abstractions" Version="2.1.1" />
-		<PackageReference Include="microsoft.aspnetcore.mvc.viewfeatures" Version="2.1.1" />
+		<PackageReference Include="microsoft.aspnetcore.mvc.abstractions" Version="2.1.2" />
+		<PackageReference Include="microsoft.aspnetcore.mvc.viewfeatures" Version="2.1.2" />
 		<PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.13" />
 		<PackageReference Include="newtonsoft.Json" Version="11.0.2" />
 	</ItemGroup>

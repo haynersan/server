@@ -18,7 +18,7 @@ namespace Shift.Infra.Data.Repository.Cadastro
         {
         }
 
-        public IEnumerable<SituacaoCommandResult> ListarSituacao()
+        public IEnumerable<SituacaoCommandResult> Listar()
         {
             return Db.Database.GetDbConnection().Query<SituacaoCommandResult>("[Estatico].[SP_SituacaoListar]",
                commandType: CommandType.StoredProcedure).ToList();

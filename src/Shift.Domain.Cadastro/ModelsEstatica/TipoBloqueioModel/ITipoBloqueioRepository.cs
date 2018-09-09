@@ -9,6 +9,6 @@ namespace Shift.Domain.Cadastro.ModelsEstatica.TipoBloqueioModel
 {
     public interface ITipoBloqueioRepository : IRepository<TipoBloqueio>
     {
-        IEnumerable<TipoBloqueioCommandResult> ListarTiposBloqueio();
+        IEnumerable<TipoBloqueioCommandResult> Listar();
     }
 }

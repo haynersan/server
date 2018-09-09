@@ -35,29 +35,28 @@ namespace Shift.Infra.CrossCutting.Identity.Repository
 
         #region Validacoes
 
-        public bool ChecarSeUsuarioExiste(int acao, Guid? id, string userName, string matricula)
+        public bool ChecarSeUsuarioExiste(int acao, Guid? id, string userName, string matricula, bool excluido)
         {
             return Db.Database.GetDbConnection().Query<bool>("[Usuario].[SP_UsuarioChecar]",
                    new
                         {   Acao        = acao,
                             Id          = id,
                             Username    = userName,
-                            Matricula   = matricula
+                            Matricula   = matricula,
+                            Excluido    = excluido
                        },
                        commandType: CommandType.StoredProcedure).FirstOrDefault();
         }
 
 
 
-        public bool ChecarSeIdEhValido(Guid id, bool excluido)
+        public bool ChecarSeIdEhValido(Guid id)
         {
 
             return Db.Database.GetDbConnection().Query<bool>("[Usuario].[SP_UsuarioIdEhValido]",
                    new
                    {
-                       Id       = id.ToString(),
-
-                       Excluido = excluido
+                       Id       = id.ToString()
                    },
                    commandType: CommandType.StoredProcedure).FirstOrDefault();
 

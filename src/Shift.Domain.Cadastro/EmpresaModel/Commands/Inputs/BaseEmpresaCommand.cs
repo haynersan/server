@@ -1,10 +1,4 @@
-﻿#region usings
-
-using System;
-using Flunt.Notifications;
-using Shift.Domain.Core.ValueObjects;
-
-#endregion
+﻿using Flunt.Notifications;
 
 namespace Shift.Domain.Cadastro.EmpresaModel.Commands.Inputs
 {

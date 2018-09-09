@@ -11,7 +11,7 @@ namespace Shift.Domain.Core.ValueObjects
 
         public CNPJ(string cnpj)
         {
-            NumeroCNPJ = cnpj;
+            NumeroCNPJ = cnpj.Replace(".", "").Replace("-", "");
 
             if (!IsCnpj(NumeroCNPJ))
                 AddNotification("CNPJ", "CNPJ inválido");

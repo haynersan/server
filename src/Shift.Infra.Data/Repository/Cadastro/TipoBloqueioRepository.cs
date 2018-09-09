@@ -22,7 +22,7 @@ namespace Shift.Infra.Data.Repository.Cadastro
 
         }
 
-        public IEnumerable<TipoBloqueioCommandResult> ListarTiposBloqueio()
+        public IEnumerable<TipoBloqueioCommandResult> Listar()
         {
             return Db.Database.GetDbConnection().Query<TipoBloqueioCommandResult>("[Estatico].[SP_TipoBloqueioListar]",
                commandType: CommandType.StoredProcedure).ToList();

@@ -136,7 +136,7 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Handlers
             }
 
 
-            var situacao = _situacaoRepository.Buscar(e => e.IdSituacao == command.IdSituacao && e.Excluido == false).FirstOrDefault();
+            var situacao = _situacaoRepository.Buscar(e => e.IdSituacao == command.IdSituacao).FirstOrDefault();
 
             if (situacao == null)
                 AddNotification("Cod Situação", "O Código de Situação informado não existe");
@@ -214,12 +214,20 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Handlers
                 return new CommandResult(false, "Não foi possível realizar esta operação. O cód. informado não existe");
 
 
+
+
+            var relacionamento = _empresaRepository.ExisteRelacionamento(nameof(command.CodEmpresa).ToString(), command.CodEmpresa.ToString());
+            if (relacionamento)
+                return new CommandResult(false, "Não foi possível realizar esta operação. Empresa possui vínculo com outras entidades da APP");
+
+
+
             //Auditoria
             //var auditoria = new LogAuditoria("Cadastro", registro.GetType().Name, EAcao.Excluir, registro.GetType().Namespace, JsonConvert.SerializeObject(registro));
 
 
-            
-            
+
+
             // Agrupar as Validações
             AddNotifications(registro);
 

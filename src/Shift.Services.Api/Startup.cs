@@ -1,22 +1,18 @@
 ﻿#region usings
 
-using System;
+using System.IO.Compression;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shift.Infra.CrossCutting.AspNetFilters;
 using Shift.Infra.CrossCutting.Identity.Context;
-using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Services.Api.Configurations;
-using Shift.Services.Api.Middlewares;
-using Swashbuckle.AspNetCore.Swagger;
 
 #endregion
 
@@ -49,14 +45,25 @@ namespace Shift.Services.Api
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-           
+
+
+
+            //Configura o modo de compressão Fonte: (https://www.youtube.com/watch?v=uUmNvH7F-eo&t=1302s_) 
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.EnableForHttps = true;
+
+            });
+
 
 
             // Configurações de Autenticação, Autorização e JWT.
             services.AddMvcSecurity(Configuration);
 
 
-
+            //Ativando o uso do Cache em Memória
+            services.AddMemoryCache();
 
 
             // Options para configurações customizadas
@@ -105,6 +112,8 @@ namespace Shift.Services.Api
             }
 
 
+            
+
 
             #region Configurações MVC
             //CORS = Cross Orige Request
@@ -115,13 +124,16 @@ namespace Shift.Services.Api
                 c.AllowAnyMethod();
                 c.AllowAnyOrigin();
                 //c.WithExposedHeaders("X-Pagination-TotalRegisters","X-Pagination-TotalPages");
-                //c.WithHeaders();
+                c.WithHeaders();
                 //c.WithOrigins("http://localhost:4200", "http://localhost:50552", "https://localhost:44390/");
                 //c.WithMethods("POST,GET,PUT,DELETE");
             });
 
             app.UseAuthentication();
             app.UseStaticFiles();
+
+            //Ativa a Comprensão
+            app.UseResponseCompression();
             app.UseMvc();
 
             #endregion

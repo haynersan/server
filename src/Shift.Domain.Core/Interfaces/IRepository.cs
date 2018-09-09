@@ -42,9 +42,11 @@ namespace Shift.Domain.Core.Interfaces
 
 
         IEnumerable<TEntity> Buscar(Expression<Func<TEntity, bool>> predicate);
-        
+
         #endregion
 
+
+        bool ExisteRelacionamento(string nameFK, string keyValue);
 
         int SaveChanges();
     }

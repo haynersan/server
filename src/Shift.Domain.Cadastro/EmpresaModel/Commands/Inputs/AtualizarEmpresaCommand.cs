@@ -20,7 +20,7 @@ namespace Shift.Domain.Cadastro.EmpresaModel.Commands.Inputs
 
             Nome        = TratandoStrings.RemoverAcentuacao(TratandoStrings.RemoverEspacosEntrePalavras(nome.ToUpper()));
 
-            Cnpj        = cnpj;
+            Cnpj        = cnpj.Replace(".", "").Replace("-", "");
 
             IdSituacao  = idSituacao;
         }

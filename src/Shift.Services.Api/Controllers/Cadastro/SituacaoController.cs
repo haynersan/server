@@ -1,8 +1,10 @@
 ﻿#region usings
 
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel;
 using Shift.Domain.Core.Interfaces;
 using Shift.Services.Api.Configurations;
@@ -34,10 +36,24 @@ namespace Shift.Services.Api.Controllers.Cadastro
 
         [HttpGet]
         [Route("v1/situacao")]
-        [Authorize()]
-        public IEnumerable<SituacaoCommandResult> Listar()
+        // [Authorize()]
+        public IEnumerable<SituacaoCommandResult> Listar([FromServices]IMemoryCache cache)
         {
-            return _situacaoRepository.ListarSituacao();
+
+
+            IEnumerable<SituacaoCommandResult> dadosJSON = cache.GetOrCreate<IEnumerable<SituacaoCommandResult>>("", context =>
+            {
+
+                context.SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
+
+                context.SetPriority(CacheItemPriority.High);
+
+                return _situacaoRepository.Listar();
+            });
+
+
+            return dadosJSON;
+
         }
 
 

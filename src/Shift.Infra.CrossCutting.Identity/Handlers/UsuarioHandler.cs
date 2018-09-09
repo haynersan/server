@@ -69,7 +69,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
 
             //Verificar se o Codigo ou Nome informado já está em Uso
-            if (_usuarioRepository.ChecarSeUsuarioExiste((int)EAcao.Adicionar, null, command.UserName, command.Matricula))
+            if (_usuarioRepository.ChecarSeUsuarioExiste((int)EAcao.Adicionar, null, command.UserName, command.Matricula, false))
             {
                 AddNotification("Nome/Matricula", "O Nome ou Matrícula já estão em uso");
                 return new CommandResult(false, "Não foi possível adicionar o registro");
@@ -136,7 +136,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
 
             //Verificar se o ID informado existe 
-            if (!_usuarioRepository.ChecarSeIdEhValido(command.Id, false))
+            if (!_usuarioRepository.ChecarSeIdEhValido(command.Id))
             {
                 AddNotification("Id Usuário", "O código do usuário informado não existe");
                 return new CommandResult(false, "Não foi possível editar o registro");
@@ -145,7 +145,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
 
             //Verificar se o Codigo ou Nome informado já está em Uso
-            if (_usuarioRepository.ChecarSeUsuarioExiste((int)EAcao.Atualizar, command.Id, command.UserName, command.Matricula))
+            if (_usuarioRepository.ChecarSeUsuarioExiste((int)EAcao.Atualizar, command.Id, command.UserName, command.Matricula, false))
             {
                 AddNotification("Nome/Matricula", "O Nome ou Matrícula já estão em uso");
                 return new CommandResult(false, "Não foi possível adicionar o registro");
@@ -177,7 +177,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
         {
             
             //Verificar se o ID informado existe 
-            if (!_usuarioRepository.ChecarSeIdEhValido(command.Id, false))
+            if (!_usuarioRepository.ChecarSeIdEhValido(command.Id))
             {
                 AddNotification("Id Usuário", "O código do usuário informado não existe");
                 return new CommandResult(false, "Não foi possível excluir o registro");
@@ -218,6 +218,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
             }
 
 
+
             var result = _signInManager.PasswordSignInAsync(command.UserName, command.Password, false, false);
 
 
@@ -252,7 +253,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
 
             //Verificar se o ID informado existe 
-            if (!_usuarioRepository.ChecarSeIdEhValido(command.UserId, false))
+            if (!_usuarioRepository.ChecarSeIdEhValido(command.UserId))
             {
                 AddNotification("Id Usuário", "O código do usuário informado não existe");
                 return new CommandResult(false, "Não foi possível excluir o registro");
@@ -294,7 +295,7 @@ namespace Shift.Infra.CrossCutting.Identity.Handlers
 
 
             //Verificar se o ID informado existe 
-            if (!_usuarioRepository.ChecarSeIdEhValido(command.UserId, false))
+            if (!_usuarioRepository.ChecarSeIdEhValido(command.UserId))
             {
                 AddNotification("Id Usuário", "O código do usuário informado não existe");
                 return new CommandResult(false, "Não foi possível excluir o registro");

@@ -9,6 +9,6 @@ namespace Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel
 {
     public interface ISituacaoRepository : IRepository<Situacao>
     {
-        IEnumerable<SituacaoCommandResult> ListarSituacao();
+        IEnumerable<SituacaoCommandResult> Listar();
     }
 }

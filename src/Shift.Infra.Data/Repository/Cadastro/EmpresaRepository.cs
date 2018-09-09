@@ -44,7 +44,7 @@ namespace Shift.Infra.Data.Repository.Cadastro
         public IEnumerable<EmpresaCommandResult> ListarEmpresas()
         {
 
-            return Db.Database.GetDbConnection().Query<EmpresaCommandResult>("[Cadastro].[SP_EmpresaListar]",
+            return Db.Database.GetDbConnection().Query<EmpresaCommandResult>("[Cadastro].[SP_EmpresaListar]", 
                 commandType: CommandType.StoredProcedure).ToList();
         }
 
@@ -53,8 +53,10 @@ namespace Shift.Infra.Data.Repository.Cadastro
         public IEnumerable<EmpresaCommandResult> ListarEmpresasPaginadas(int pagina, int qtdeItensPorPagina, string nome)
         {
             return Db.Database.GetDbConnection().Query<EmpresaCommandResult>("[Cadastro].[SP_EmpresaListar]",
-                new { Nome = nome},
-                commandType: CommandType.StoredProcedure).ToList().Skip(qtdeItensPorPagina * (pagina - 1)).Take(qtdeItensPorPagina);
+                new {
+                        Nome        = nome
+                    },
+                    commandType: CommandType.StoredProcedure).ToList().Skip(qtdeItensPorPagina * (pagina - 1)).Take(qtdeItensPorPagina);
         }
 
 

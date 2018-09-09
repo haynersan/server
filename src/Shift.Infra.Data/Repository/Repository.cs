@@ -2,8 +2,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Shift.Domain.Core.Interfaces;
 using Shift.Domain.Core.Models;
@@ -100,6 +102,23 @@ namespace Shift.Infra.Data.Repository
         #endregion
 
 
+        #region Validacoes
+
+        public virtual bool ExisteRelacionamento(string nameFK, string keyValue)
+        {
+            return Db.Database.GetDbConnection().Query<bool>("[Relacao].[SP_RelacaoChecar]",
+                   new
+                   {
+                       NAME_FK      = nameFK,
+
+                       KEY_VALUE    = keyValue
+
+                   },
+                   commandType: CommandType.StoredProcedure).FirstOrDefault();
+        }
+
+        #endregion
+
 
         #region Fechamento
 
@@ -115,7 +134,13 @@ namespace Shift.Infra.Data.Repository
         }
 
 
+
+
         #endregion
+
+
+
+      
 
     }
 }

@@ -14,9 +14,9 @@ namespace Shift.Infra.CrossCutting.Identity.Repository
 
         #region Validacoes
 
-        bool ChecarSeUsuarioExiste(int acao, Guid? id, string userName, string matricula);
+        bool ChecarSeUsuarioExiste(int acao, Guid? id, string userName, string matricula, bool excluido);
 
-        bool ChecarSeIdEhValido(Guid id, bool excluido);
+        bool ChecarSeIdEhValido(Guid id);
 
         bool ChecarSeUsuarioMovimenta(Guid id);
 

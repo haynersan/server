@@ -3,10 +3,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Shift.Domain.Cadastro.CadastrosContabeis.CentroCustoModel.Handlers;
+using Shift.Domain.Cadastro.CadastrosContabeis.CentroCustoModel.Repository;
 using Shift.Domain.Cadastro.EmpresaModel.Handlers;
 using Shift.Domain.Cadastro.EmpresaModel.Repository;
 using Shift.Domain.Cadastro.LogAuditoriaModel;
 using Shift.Domain.Cadastro.ModelsEstatica;
+using Shift.Domain.Cadastro.ModelsEstatica.ClasseContabilModel;
+using Shift.Domain.Cadastro.ModelsEstatica.GrupoModel;
 using Shift.Domain.Cadastro.ModelsEstatica.SituacaoModel;
 using Shift.Domain.Cadastro.ModelsEstatica.TipoBloqueioModel;
 using Shift.Domain.Core.Interfaces;
@@ -17,6 +21,7 @@ using Shift.Infra.CrossCutting.Identity.Models;
 using Shift.Infra.CrossCutting.Identity.Repository;
 using Shift.Infra.Data.Context;
 using Shift.Infra.Data.Repository.Cadastro;
+using Shift.Infra.Data.Repository.CadastrosContabeis;
 using Shift.Infra.Data.UoW;
 
 #endregion
@@ -42,6 +47,8 @@ namespace Shift.Infra.CrossCutting.IoC
 
             services.AddScoped<EmpresaHandler, EmpresaHandler>();
 
+            services.AddScoped<CentroCustoHandler, CentroCustoHandler>();
+
             //Exemplo Padrao Eduardo Pires Aula 15 Time: 49:29
             //services.AddScoped<IHandler<AdicionarEmpresaCommand>, EmpresaHandler>();
 
@@ -63,17 +70,29 @@ namespace Shift.Infra.CrossCutting.IoC
 
             #region Infra.Data.Repository.Cadastro
 
-            services.AddScoped<IClaimValueRepository,   ClaimValueRepository>();
+            services.AddScoped<IClaimValueRepository,       ClaimValueRepository>();
 
-            services.AddScoped<IEmpresaRepository,      EmpresaRepository>();
+            services.AddScoped<IClasseContabilRepository,   ClasseContabilRepository>();
 
-            services.AddScoped<ILogAuditoriaRepository, LogAuditoriaRepository>();
+            services.AddScoped<IEmpresaRepository,          EmpresaRepository>();
 
-            services.AddScoped<ISituacaoRepository,     SituacaoRepository>();
+            services.AddScoped<IGrupoRepository,            GrupoRepository>();
 
-            services.AddScoped<ITipoBloqueioRepository, TipoBloqueioRepository>();
+            services.AddScoped<ILogAuditoriaRepository,     LogAuditoriaRepository>();
 
-         
+            services.AddScoped<ISituacaoRepository,         SituacaoRepository>();
+
+            services.AddScoped<ITipoBloqueioRepository,     TipoBloqueioRepository>();
+
+
+            #endregion
+
+            
+            
+            #region Infra.Data.Repository.CadastrosContabeis
+
+            services.AddScoped<ICentroCustoRepository, CentroCustoRepository>();
+
             #endregion
 
 

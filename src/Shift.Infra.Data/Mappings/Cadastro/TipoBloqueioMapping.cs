@@ -37,6 +37,8 @@ namespace Shift.Infra.Data.Mappings.Cadastro
 
             builder.Ignore(x => x.CodEmpresa);
 
+            builder.Ignore(x => x.Excluido);
+
             builder.Ignore(x => x.Notifications);
 
             builder.Ignore(x => x.Valid);

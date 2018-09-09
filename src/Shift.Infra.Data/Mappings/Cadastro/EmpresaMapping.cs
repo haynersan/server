@@ -63,6 +63,8 @@ namespace Shift.Infra.Data.Mappings.Cadastro
 
             builder.Ignore(e => e.Id);
 
+            builder.Ignore(e => e.Excluido);
+
             builder.Ignore(e => e.Notifications);
 
             builder.Ignore(e => e.Valid);

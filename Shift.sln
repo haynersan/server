@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shift.Infra.Data", "src\Shi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shift.Infra.CrossCutting.AspNetFilters", "src\Shift.Infra.CrossCutting.AspNetFilters\Shift.Infra.CrossCutting.AspNetFilters.csproj", "{BCF790A2-5030-430E-A8A9-131BFCDE7724}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shift.Domain.Cadastro", "src\Shift.Domain.Cadastro\Shift.Domain.Cadastro.csproj", "{E9338584-839D-412E-8409-C728FF90F2D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shift.Domain.Cadastro", "src\Shift.Domain.Cadastro\Shift.Domain.Cadastro.csproj", "{E9338584-839D-412E-8409-C728FF90F2D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
